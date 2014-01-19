@@ -8,11 +8,15 @@ shared_context "rake" do
   let(:task_name) { "production:#{self.class.top_level_description}" }
   let(:task) { Rake::Task[task_name] }
   let(:tasklib) { @tasklib }
-
+  let(:deploy_config) { build(:deploy_config) }
+  let(:environment) { deploy_config.environments[0] }
+  
   subject { task }
   
   before(:each) do
     Rake::Task.clear
+    
+    stub_shell
     
     @tasklib = Heroploy::TaskLib.new(deploy_config)
     

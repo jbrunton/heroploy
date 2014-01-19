@@ -47,8 +47,8 @@ module Heroploy
             desc "check the changes have already been staged"
             task :staged do
               if env_config.checks.staged then
-                remote = deploy_config.environments[env_config.checks.staged].remote
-                check_staged(remote, current_branch, env_config.name)
+                staging_env_config = deploy_config.environments[env_config.checks.staged]
+                check_staged(staging_env_config.remote, current_branch, staging_env_config.name)
               end
             end
 
