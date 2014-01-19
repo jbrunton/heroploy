@@ -1,11 +1,11 @@
 require 'spec_helper'
 
-describe GitCommands do
+describe Commands::Git do
   before(:each) do
     stub_shell
   end
   
-  let(:commands) { Object.new.extend(GitCommands) }
+  let(:commands) { Object.new.extend(Commands::Git) }
   
   context "#git_fetch" do
     it "executes a git fetch" do

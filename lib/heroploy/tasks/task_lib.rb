@@ -1,11 +1,16 @@
 require 'rake/tasklib'
 
+require 'heroploy/commands/heroku'
+require 'heroploy/commands/git'
+
+require 'heroploy/config/deploy_config'
+
 module Heroploy
   class TaskLib < ::Rake::TaskLib
     include ::Rake::DSL if defined?(::Rake::DSL)
     
-    include GitCommands
-    include HerokuCommands
+    include Commands::Git
+    include Commands::Heroku
     
     attr_accessor :config
     
