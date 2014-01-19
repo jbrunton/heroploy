@@ -18,7 +18,7 @@ shared_context "rake" do
     EOF
     
     deploy_config = DeployConfig.new(YAML.load(heroploy_file))
-    @tasklib = Heroploy::RakeTask.new(deploy_config)
+    @tasklib = Heroploy::TaskLib.new(deploy_config)
     
     Rake::Task.tasks.each do |task|
       if task.name != task_name

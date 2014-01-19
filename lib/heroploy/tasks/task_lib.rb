@@ -1,7 +1,7 @@
 require 'rake/tasklib'
 
 module Heroploy
-  class RakeTask < ::Rake::TaskLib
+  class TaskLib < ::Rake::TaskLib
     include ::Rake::DSL if defined?(::Rake::DSL)
     
     include GitCommands
