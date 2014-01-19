@@ -1,6 +1,8 @@
+require 'heroploy/shell'
+
 module HerokuCommands
   def heroku_exec(cmd, app_name)
-    FileUtils.sh "heroku #{cmd} --app #{app_name}"
+    Shell.exec "heroku #{cmd} --app #{app_name}"
   end
   
   def heroku_run(cmd, app_name)

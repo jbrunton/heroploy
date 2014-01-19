@@ -1,6 +1,10 @@
 require 'spec_helper'
 
 describe GitCommands do
+  before(:each) do
+    stub_shell
+  end
+  
   let(:commands) { Object.new.extend(GitCommands) }
   
   context "#git_fetch" do
@@ -39,7 +43,7 @@ describe GitCommands do
   
   context "#git_remote_exists?" do
     it "evaluates git remote to enumerate the available remotes" do
-      expect_eval("git remote").and_return("")
+      expect_eval("git remote")
       commands.git_remote_exists?("my-remote")
     end
     
@@ -51,6 +55,13 @@ describe GitCommands do
     it "returns false if the given remote doesn't exist" do
       expect_eval("git remote").and_return("origin\nproduction")
       expect(commands.git_remote_exists?("staging")).to eq(false)
+    end
+  end
+  
+  context "#git_tag" do
+    it "creates a tag with the given name and message" do
+      expect_command("git tag -a my-tag -m \"my message\"")
+      commands.git_tag("my-tag", "my message")
     end
   end
 end

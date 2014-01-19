@@ -1,6 +1,10 @@
 require 'spec_helper'
 
 describe HerokuCommands do
+  before(:each) do
+    stub_shell
+  end
+  
   let(:commands) { Object.new.extend(HerokuCommands) }
   
   context "#heroku_exec" do
