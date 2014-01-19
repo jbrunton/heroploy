@@ -32,7 +32,7 @@ namespace :heroploy do
               raise "Branch #{branch_name} doesn't exist in origin"
             end
           
-            unless git_remote_behind?('origin', branch_name)
+            if git_remote_behind?('origin', branch_name) then
               raise "Branch #{branch_name} is behind origin/#{branch_name}"
             end
           end
