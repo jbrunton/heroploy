@@ -1,7 +1,7 @@
 require 'heroploy/git_commands'
 require 'heroploy/heroku_commands'
 require 'heroploy/config/deploy_config'
-require 'heroploy/rake_task'
+require 'heroploy/tasks/task_lib'
 
 namespace :heroploy do
 
@@ -12,5 +12,5 @@ namespace :heroploy do
   end
   
   deploy_config = DeployConfig.load  
-  Heroploy::RakeTask.new(deploy_config)
+  Heroploy::TaskLib.new(deploy_config)
 end

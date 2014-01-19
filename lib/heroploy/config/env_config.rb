@@ -1,17 +1,21 @@
 require 'heroploy/config/checks_config'
 
 class EnvConfig
-  attr_reader :name
-  attr_reader :remote
-  attr_reader :heroku
-  attr_reader :tag
-  attr_reader :checks
+  attr_accessor :name
+  attr_accessor :remote
+  attr_accessor :heroku
+  attr_accessor :tag
+  attr_accessor :checks
   
-  def initialize(name, attrs)
-    @name = name
-    @remote = attrs['remote'] || name
-    @heroku = attrs['heroku']
-    @tag = attrs['tag']
-    @checks = ChecksConfig.new(attrs['checks'])
+  def self.parse(name, attrs)
+    config = EnvConfig.new
+    
+    config.name = name
+    config.remote = attrs['remote'] || name
+    config.heroku = attrs['heroku']
+    config.tag = attrs['tag']
+    config.checks = ChecksConfig.parse(attrs['checks'])
+
+    config
   end
 end

@@ -1,12 +1,16 @@
 class ChecksConfig
-  attr_reader :pushed
-  attr_reader :branch
-  attr_reader :staged
+  attr_accessor :pushed
+  attr_accessor :branch
+  attr_accessor :staged
   
-  def initialize(attrs)
+  def self.parse(attrs)
+    config = ChecksConfig.new
+    
     attrs ||= {}
-    @pushed = attrs['pushed']
-    @branch = attrs['branch']
-    @staged = attrs['staged'] || 'staging'
+    config.pushed = attrs['pushed']
+    config.branch = attrs['branch']
+    config.staged = attrs['staged'] || 'staging'
+    
+    config
   end
 end

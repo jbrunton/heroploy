@@ -1,9 +1,11 @@
-# this file courtesy of http://robots.thoughtbot.com/test-rake-tasks-like-a-boss
+# references:
+#   http://robots.thoughtbot.com/test-rake-tasks-like-a-boss
+#   http://www.e-tobi.net/blog/2008/10/04/
 
 require "rake"
 
 shared_context "rake" do
-  let(:task_name) { self.class.top_level_description }
+  let(:task_name) { "production:#{self.class.top_level_description}" }
   let(:task) { Rake::Task[task_name] }
   let(:tasklib) { @tasklib }
 
@@ -11,13 +13,7 @@ shared_context "rake" do
   
   before(:each) do
     Rake::Task.clear
-    heroploy_file = <<-EOF
-      environments:
-        production:
-          heroku: my-production-app
-    EOF
     
-    deploy_config = DeployConfig.new(YAML.load(heroploy_file))
     @tasklib = Heroploy::TaskLib.new(deploy_config)
     
     Rake::Task.tasks.each do |task|
