@@ -6,7 +6,7 @@ describe "check:staged" do
 
     it "invokes :check_pushed" do
       staging_env_config = build(:env_config, name: "staging", remote: "my-staging-remote")
-      deploy_config.environments.stub(:[]).with("staging").and_return(staging_env_config)
+      deploy_config.stub(:[]).with("staging").and_return(staging_env_config)
       tasklib.stub(:current_branch).and_return("my-branch")
 
       expect(tasklib).to receive(:check_staged).with("my-staging-remote", "my-branch", "staging")

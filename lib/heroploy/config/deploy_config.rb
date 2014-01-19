@@ -3,6 +3,10 @@ require 'heroploy/config/env_config'
 class DeployConfig
   attr_accessor :environments
   
+  def [](env_name)
+    environments.select{ |env_config| env_config.name == env_name}.first
+  end
+  
   def self.parse(attrs)
     config = DeployConfig.new
     

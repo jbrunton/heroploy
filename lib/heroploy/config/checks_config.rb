@@ -9,7 +9,7 @@ class ChecksConfig
     attrs ||= {}
     config.pushed = attrs['pushed']
     config.branch = attrs['branch']
-    config.staged = attrs['staged'] || 'staging'
+    config.staged = attrs['staged'] == true ? 'staging' : attrs['staged']
     
     config
   end
