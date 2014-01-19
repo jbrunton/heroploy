@@ -1,5 +1,8 @@
 # Heroploy
 
+[![Build Status](https://travis-ci.org/jbrunton/heroploy.png?branch=master)](https://travis-ci.org/jbrunton/heroploy)
+[![Code Climate](https://codeclimate.com/github/jbrunton/heroploy.png)](https://codeclimate.com/github/jbrunton/heroploy)
+
 A few helpful rake tasks to manage deploying Rails apps to development, staging and production Heroku servers.
 
 ## Installation
