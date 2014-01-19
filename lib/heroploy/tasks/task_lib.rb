@@ -2,6 +2,7 @@ require 'rake/tasklib'
 
 require 'heroploy/commands/heroku'
 require 'heroploy/commands/git'
+require 'heroploy/commands/checks'
 
 require 'heroploy/config/deploy_config'
 
@@ -11,6 +12,7 @@ module Heroploy
     
     include Commands::Git
     include Commands::Heroku
+    include Commands::Checks
     
     attr_accessor :config
     
@@ -24,40 +26,29 @@ module Heroploy
             desc "check remote exists for #{env_config.name}"
             task :remote do
               remote = env_config.remote
-              unless git_remote_exists?(remote)
-                raise "Could not find remote '#{remote}'"
-              end
+              check_remote(remote)
             end
 
             desc "check changes have been pushed to origin"
             task :pushed do
               if env_config.checks.pushed then
-                branch_name = current_branch
-                unless git_remote_has_branch?('origin', branch_name)
-                  raise "Branch #{branch_name} doesn't exist in origin"
-                end
-
-                if git_remote_behind?('origin', branch_name) then
-                  raise "Branch #{branch_name} is behind origin/#{branch_name}"
-                end
+                check_pushed(current_branch)
               end
             end
 
             desc "check we can deploy to #{env_config.name} from the current branch"
             task :branch do
               if env_config.checks.branch then
-                unless current_branch == env_config.checks.branch
-                  raise "Cannot deploy branch #{current_branch} to #{env_config.name}"
-                end
+                valid_branch = env_config.checks.branch
+                check_branch(current_branch, valid_branch, env_config.name)
               end
             end
 
             desc "check the changes have already been staged"
             task :staged do
               if env_config.checks.staged then
-                unless git_staged?(deploy_config.environments[env_config.checks.staged].remote, current_branch)
-                  raise "Changes not yet staged on #{env_config.name}"
-                end
+                remote = deploy_config.environments[env_config.checks.staged].remote
+                check_staged(remote, current_branch, env_config.name)
               end
             end
 
