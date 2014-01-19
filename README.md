@@ -1,6 +1,6 @@
 # Heroploy
 
-TODO: Write a gem description
+A few helpful rake tasks to manage deploying Rails apps to development, staging and production Heroku servers.
 
 ## Installation
 
@@ -18,7 +18,28 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Add a .heroploy file in your application's root directory which describes the Heroku apps you will deploy to, and the c
+
+```yaml
+apps:
+  development:
+    heroku: my-app-development
+
+  staging:
+    heroku: my-app-staging
+    checks:
+      pushed: true
+      branch: master
+
+  production:
+    heroku: my-app-production
+    tag: 'RELEASE_%Y%m%dT%H%M%S%z'
+    checks:
+      pushed: true
+      branch: master
+      staged: true
+```
+
 
 ## Contributing
 
