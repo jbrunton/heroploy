@@ -18,11 +18,9 @@ namespace :heroploy do
       namespace :check do
         desc "check remote exists for #{app_name}"
         task :remote do
-          if config.checks.remote then
-            remote = config.checks.remote == true ? 'origin' : config.checks.remote
-            unless git_remote_exists?(remote)
-              raise "Could not find remote '#{remote}'"
-            end
+          remote = config.remote || app_name
+          unless git_remote_exists?(remote)
+            raise "Could not find remote '#{remote}'"
           end
         end
         
