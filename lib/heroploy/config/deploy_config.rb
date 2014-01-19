@@ -1,3 +1,5 @@
+require 'heroploy/config/app_config'
+
 class DeployConfig
   attr_reader :apps
   

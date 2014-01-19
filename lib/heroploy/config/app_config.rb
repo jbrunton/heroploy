@@ -1,3 +1,5 @@
+require 'heroploy/config/checks_config'
+
 class AppConfig
   attr_reader :name
   attr_reader :remote
