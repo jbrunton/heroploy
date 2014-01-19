@@ -11,16 +11,29 @@ describe HerokuCommands do
   end
   
   context "#current_branch" do
-    let(:expected_output) { "master\n" }
+    let(:expected_rev_parse_output) { "master\n" }
 
     it "evaluates git rev-parse to figure out the current branch" do
-      expect_eval("git rev-parse --abbrev-ref HEAD").and_return(expected_output)
+      expect_eval("git rev-parse --abbrev-ref HEAD").and_return(expected_rev_parse_output)
       commands.current_branch
     end
     
     it "trims the output to just the branch name" do
-      expect_eval.and_return(expected_output)
+      expect_eval.and_return(expected_rev_parse_output)
       expect(commands.current_branch).to eq("master")
+    end
+  end
+  
+  context "#git_push_to_master" do
+    it "pushes the local branch to the remote master" do
+      expect_command("git push my-repo my-branch:master")
+      commands.git_push_to_master("my-repo", "my-branch")
+    end
+    
+    it "appends the --force option if the 'force' ENV variable is set" do
+      expect(ENV).to receive(:[]).and_return('true')
+      expect_command("git push --force my-repo my-branch:master")
+      commands.git_push_to_master("my-repo", "my-branch")
     end
   end
 end

@@ -21,6 +21,6 @@ describe HerokuCommands do
     it "runs rake db:migrate on the heroku server" do
       expect_command("heroku run rake db:migrate --app my-app")
       commands.heroku_migrate("my-app")
-    end
+    end    
   end
 end

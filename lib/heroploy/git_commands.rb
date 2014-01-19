@@ -8,11 +8,8 @@ module GitCommands
     branch.strip
   end
   
-  def git_push(repo_name, local_branch)
-    if ENV['force'] == 'true'
-      opts = "--force "
-    end
-    
-    sh "git push #{opts}#{repo_name} #{local_branch}:master"
+  def git_push_to_master(repo_name, local_branch)
+    if ENV['force'] == 'true' then opts = "--force " end
+    FileUtils.sh "git push #{opts}#{repo_name} #{local_branch}:master"
   end
 end
