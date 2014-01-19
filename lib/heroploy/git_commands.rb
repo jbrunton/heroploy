@@ -12,4 +12,9 @@ module GitCommands
     if ENV['force'] == 'true' then opts = "--force " end
     FileUtils.sh "git push #{opts}#{repo_name} #{local_branch}:master"
   end
+  
+  def git_remote_exists?(name)
+    remotes = Shell.eval("git remote").strip.split(/\s+/)
+    remotes.include?(name)
+  end
 end

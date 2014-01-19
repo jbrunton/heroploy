@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe HerokuCommands do
+describe GitCommands do
   let(:commands) { Object.new.extend(GitCommands) }
   
   context "#git_fetch" do
@@ -34,6 +34,23 @@ describe HerokuCommands do
       expect(ENV).to receive(:[]).and_return('true')
       expect_command("git push --force my-repo my-branch:master")
       commands.git_push_to_master("my-repo", "my-branch")
+    end
+  end
+  
+  context "#git_remote_exists?" do
+    it "evaluates git remote to enumerate the available remotes" do
+      expect_eval("git remote").and_return("")
+      commands.git_remote_exists?("my-remote")
+    end
+    
+    it "returns true if the given remote exists" do
+      expect_eval("git remote").and_return("origin\nstaging\nproduction")
+      expect(commands.git_remote_exists?("staging")).to eq(true)
+    end
+
+    it "returns false if the given remote doesn't exist" do
+      expect_eval("git remote").and_return("origin\nproduction")
+      expect(commands.git_remote_exists?("staging")).to eq(false)
     end
   end
 end
