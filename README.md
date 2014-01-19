@@ -21,7 +21,9 @@ Or install it yourself as:
 
 ## Usage
 
-Add a .heroploy file in your application's root directory which describes the Heroku apps you will deploy to, and the c
+Add a .heroploy file in your application's root directory which describes the Heroku apps you will deploy to, and the checks you would like when deploying to each.
+
+For example:
 
 ```yaml
 apps:
@@ -43,6 +45,15 @@ apps:
       staged: true
 ```
 
+This file:
+* Describes ```development```, ```staging``` and ```production``` deployment rules for three Heroku apps (named ```my-app-development```, ```my-app-staging``` and ```my-app-production``` on Heroku).
+* Allows any branch to be pushed directly to ```development```.
+* Only allows ```master``` to be pushed to ```staging```, and requires all changes to have first been pushed to ```origin```.
+* Only allows deployment to ```production``` if the changes have first been staged on ```staging```.
+
+To deploy to one of these environments, run ```rake heroploy:<environment>:deploy```.  For example:
+
+    rake heroploy:production:deploy
 
 ## Contributing
 
