@@ -13,10 +13,10 @@ namespace :heroploy do
   
   deploy_config = DeployConfig.new('.heroploy.yml')
   
-  deploy_config.apps.each do |app_name, config|
-    namespace app_name do
+  deploy_config.environments.each do |env_name, config|
+    namespace env_name do
       namespace :check do
-        desc "check remote exists for #{app_name}"
+        desc "check remote exists for #{env_name}"
         task :remote do
           remote = config.remote
           unless git_remote_exists?(remote)
@@ -38,11 +38,11 @@ namespace :heroploy do
           end
         end
 
-        desc "check we can deploy to #{app_name} from the current branch"
+        desc "check we can deploy to #{env_name} from the current branch"
         task :branch do
           if config.checks.branch then
             unless current_branch == config.checks.branch
-              raise "Cannot deploy branch #{current_branch} to #{app_name}"
+              raise "Cannot deploy branch #{current_branch} to #{env_name}"
             end
           end
         end
@@ -50,36 +50,36 @@ namespace :heroploy do
         desc "check the changes have already been staged"
         task :staged do
           if config.checks.staged then
-            unless git_staged?(deploy_config.apps[config.checks.staged].remote, current_branch)
-              raise "Changes not yet staged on #{app_name}"
+            unless git_staged?(deploy_config.environments[config.checks.staged].remote, current_branch)
+              raise "Changes not yet staged on #{env_name}"
             end
           end
         end
         
-        desc "do all the checks for #{app_name}"
+        desc "do all the checks for #{env_name}"
         task :all => [:remote, :pushed, :branch, :staged]
       end
       
-      desc "push the current branch to master on #{app_name}"
+      desc "push the current branch to master on #{env_name}"
       task :push do
         git_push_to_master(config.remote, current_branch)
       end
       
-      desc "run database migrations on #{app_name}"
+      desc "run database migrations on #{env_name}"
       task :migrate do
         heroku_migrate(config.heroku)
       end
 
-      desc "tag the deployment to #{app_name}"
+      desc "tag the deployment to #{env_name}"
       task :tag do
         if config.tag then
           tag = DateTime.now.strftime(config.tag)
-          git_tag(tag, "Deployed #{current_branch} to #{app_name}")
+          git_tag(tag, "Deployed #{current_branch} to #{env_name}")
           git_push_tag(tag)
         end
       end
 
-      desc "deploy to #{app_name}"
+      desc "deploy to #{env_name}"
       task :deploy => ['check:all', :push, :migrate, :tag]
     end
   end
