@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Heroploy::VERSION
   spec.authors       = ["John Brunton"]
   spec.email         = ["john_brunton@hotmail.co.uk"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
+  spec.description   = %q{Helpful rake tasks to manage deploying to development, staging and production Heroku servers}
+  spec.summary       = %q{Helpful rake tasks for deploying to Heroku}
   spec.homepage      = ""
   spec.license       = "MIT"
 
