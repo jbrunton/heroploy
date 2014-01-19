@@ -1,12 +1,12 @@
-require 'heroploy/config/app_config'
+require 'heroploy/config/env_config'
 
 class DeployConfig
-  attr_reader :apps
+  attr_reader :environments
   
   def initialize(file_name)
-    @apps = YAML::load(File.open(file_name))['apps']
-    @apps.each do |app_name, attrs|
-      @apps[app_name] = AppConfig.new(app_name, attrs)
+    @environments = YAML::load(File.open(file_name))['environments']
+    @environments.each do |name, attrs|
+      @environments[name] = EnvConfig.new(name, attrs)
     end
   end
 end

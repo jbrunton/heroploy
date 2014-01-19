@@ -1,6 +1,6 @@
 require 'heroploy/config/checks_config'
 
-class AppConfig
+class EnvConfig
   attr_reader :name
   attr_reader :remote
   attr_reader :heroku
