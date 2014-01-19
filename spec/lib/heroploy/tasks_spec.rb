@@ -1,25 +1,6 @@
-describe "heroploy:production:check:remote" do
+describe "production:check:remote" do
+  include_context "rake"
 
-  before(:each) do
-    Rake::Task.clear
-    heroploy_file = <<-EOF
-      environments:
-        production:
-          heroku: my-production-app
-    EOF
-    deploy_config = DeployConfig.new(YAML.load(heroploy_file))
-    @tasklib = Heroploy::RakeTask.new(deploy_config)
-    
-    Rake::Task.tasks.each do |task|
-      if task.name != 'production:check:remote'
-        task.stub(:execute)
-      end
-    end
-  end
-  
-  let(:task) { Rake::Task['production:check:remote'] }
-  let(:tasklib) { @tasklib }
-  
   it "invokes :git_remote_exists?" do
     expect(tasklib).to receive(:git_remote_exists?).with('production').and_return(true)
     task.invoke
@@ -40,26 +21,9 @@ describe "heroploy:production:check:remote" do
   end
 end
 
-describe "heroploy:production:deploy" do
-  before(:each) do
-    Rake::Task.clear
-    heroploy_file = <<-EOF
-      environments:
-        production:
-          heroku: my-production-app
-    EOF
-    deploy_config = DeployConfig.new(YAML.load(heroploy_file))
-    Heroploy::RakeTask.new(deploy_config)
-    
-    Rake::Task.tasks.each do |task|
-      if task.name != 'production:deploy'
-        task.stub(:execute)
-      end
-    end
-  end
-  
-  let(:task) { Rake::Task['production:deploy'] }
-  
+describe "production:deploy" do
+  include_context "rake"
+
   it "should have the following prerequisites" do
     expect(task.prerequisites).to eq ["check:all", "push", "migrate", "tag"]
   end
