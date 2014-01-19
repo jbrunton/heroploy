@@ -1,4 +1,4 @@
-require 'heroploy/shell'
+require 'heroploy/commands/shell'
 
 module Commands
   module Heroku

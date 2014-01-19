@@ -1,5 +1,3 @@
-require 'heroploy/git_commands'
-require 'heroploy/heroku_commands'
 require 'heroploy/config/deploy_config'
 require 'heroploy/tasks/task_lib'
 
