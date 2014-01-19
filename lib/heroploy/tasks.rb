@@ -18,7 +18,7 @@ namespace :heroploy do
       namespace :check do
         desc "check remote exists for #{app_name}"
         task :remote do
-          remote = config.remote || app_name
+          remote = config.remote
           unless git_remote_exists?(remote)
             raise "Could not find remote '#{remote}'"
           end
@@ -50,8 +50,7 @@ namespace :heroploy do
         desc "check the changes have already been staged"
         task :staged do
           if config.checks.staged then
-            staging_app_name = config.checks.staged == true ? 'staging' : config.checks.staged
-            unless git_staged?(deploy_config.apps[staging_app_name].remote, current_branch)
+            unless git_staged?(deploy_config.apps[config.checks.staged].remote, current_branch)
               raise "Changes not yet staged on #{app_name}"
             end
           end
