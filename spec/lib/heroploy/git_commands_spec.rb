@@ -30,14 +30,14 @@ describe GitCommands do
   
   context "#git_push_to_master" do
     it "pushes the local branch to the remote master" do
-      expect_command("git push my-repo my-branch:master")
-      commands.git_push_to_master("my-repo", "my-branch")
+      expect_command("git push my-remote my-branch:master")
+      commands.git_push_to_master("my-remote", "my-branch")
     end
     
     it "appends the --force option if the 'force' ENV variable is set" do
       expect(ENV).to receive(:[]).and_return('true')
-      expect_command("git push --force my-repo my-branch:master")
-      commands.git_push_to_master("my-repo", "my-branch")
+      expect_command("git push --force my-remote my-branch:master")
+      commands.git_push_to_master("my-remote", "my-branch")
     end
   end
   
@@ -56,6 +56,57 @@ describe GitCommands do
       expect_eval("git remote").and_return("origin\nproduction")
       expect(commands.git_remote_exists?("staging")).to eq(false)
     end
+  end
+  
+  context "#git_remote_has_branch?" do
+    it "evaluates git branch -r to determine the remote branches" do
+      expect_eval("git branch -r")
+      commands.git_remote_has_branch?("my-remote", "my-branch")
+    end
+    
+    it "returns true if the remote has a branch with the given name" do
+      expect_eval("git branch -r").and_return("  my-remote/my-branch\n  my-remote/other-branch\n")
+      expect(commands.git_remote_has_branch?("my-remote", "my-branch")).to be(true)
+    end
+
+    it "returns false if the remote has no branch with the given name" do
+      expect_eval("git branch -r").and_return("  my-remote/other-branch\n")
+      expect(commands.git_remote_has_branch?("my-remote", "my-branch")).to be(false)
+    end
+  end
+  
+  context "#git_remote_behind?" do
+    it "inspects the git log to see if the remote is ahead" do
+      expect_eval("git log my-remote/my-remote-branch..my-local-branch")
+      commands.git_remote_behind?("my-remote", "my-remote-branch", "my-local-branch")
+    end
+    
+    it "uses the remote branch name as the local branch name if none is supplied" do
+      expect_eval("git log my-remote/my-branch..my-branch")
+      commands.git_remote_behind?("my-remote", "my-branch")
+    end
+    
+    it "returns true if git log returns commits" do
+      expect_eval("git log my-remote/my-remote-branch..my-local-branch").and_return("commit a1b2c3d")
+      expect(commands.git_remote_behind?("my-remote", "my-remote-branch", "my-local-branch")).to eq(true)
+    end
+
+    it "returns false if git log returns no commits" do
+      expect_eval("git log my-remote/my-remote-branch..my-local-branch").and_return("")
+      expect(commands.git_remote_behind?("my-remote", "my-remote-branch", "my-local-branch")).to eq(false)
+    end  
+  end
+  
+  context "#git_staged?" do
+    it "returns true if the remote master is up to date" do
+      expect_eval("git log my-remote/master..my-local-branch").and_return("")
+      expect(commands.git_staged?("my-remote", "my-local-branch")).to eq(true)
+    end
+
+    it "returns false if the remote master is behind" do
+      expect_eval("git log my-remote/master..my-local-branch").and_return("commit a1b2c3d")
+      expect(commands.git_staged?("my-remote", "my-local-branch")).to eq(false)
+    end  
   end
   
   context "#git_tag" do

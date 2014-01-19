@@ -20,6 +20,20 @@ module GitCommands
     remotes.include?(name)
   end
   
+  def git_remote_has_branch?(remote, branch_name)
+    branches = Shell.eval("git branch -r").strip.split(/\s+/)
+    branches.include?("#{remote}/#{branch_name}")
+  end
+  
+  def git_remote_behind?(remote, remote_branch_name, local_branch_name = nil)
+    if local_branch_name.nil? then local_branch_name = remote_branch_name end
+    !Shell.eval("git log #{remote}/#{remote_branch_name}..#{local_branch_name}").empty?
+  end
+  
+  def git_staged?(remote, local_branch)
+    !git_remote_behind?(remote, 'master', local_branch)
+  end
+  
   def git_tag(tag, message)
     Shell.exec("git tag -a #{tag} -m \"#{message}\"")
   end

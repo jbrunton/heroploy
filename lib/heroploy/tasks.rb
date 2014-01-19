@@ -18,23 +18,49 @@ namespace :heroploy do
       namespace :check do
         desc "check remote exists for #{app_name}"
         task :remote do
-          unless git_remote_exists?(config.remote)
-            raise "Could not find remote '#{config.remote}'"
+          if config.checks.remote then
+            remote = config.checks.remote == true ? 'origin' : config.checks.remote
+            unless git_remote_exists?(remote)
+              raise "Could not find remote '#{remote}'"
+            end
           end
         end
         
+        desc "check changes have been pushed to origin"
+        task :pushed do
+          if config.checks.pushed then
+            branch_name = current_branch
+            unless git_remote_has_branch?('origin', branch_name)
+              raise "Branch #{branch_name} doesn't exist in origin"
+            end
+          
+            unless git_remote_behind?('origin', branch_name)
+              raise "Branch #{branch_name} is behind origin/#{branch_name}"
+            end
+          end
+        end
+
         desc "check we can deploy to #{app_name} from the current branch"
         task :branch do
-          
+          if config.checks.branch then
+            unless current_branch == config.checks.branch
+              raise "Cannot deploy branch #{current_branch} to #{app_name}"
+            end
+          end
         end
         
         desc "check the changes have already been staged"
         task :staged do
-          
+          if config.checks.staged then
+            staging_app_name = config.checks.staged == true ? 'staging' : config.checks.staged
+            unless git_staged?(deploy_config.apps[staging_app_name].remote, current_branch)
+              raise "Changes not yet staged on #{app_name}"
+            end
+          end
         end
         
         desc "do all the checks for #{app_name}"
-        task :all => [:remote, :branch, :staged]
+        task :all => [:remote, :pushed, :branch, :staged]
       end
       
       desc "push the current branch to master on #{app_name}"
