@@ -11,7 +11,7 @@ namespace :heroploy do
     git_fetch
   end
   
-  deploy_config = DeployConfig.new('.deploy.yml')
+  deploy_config = DeployConfig.new('.heroploy.yml')
   
   deploy_config.apps.each do |app_name, config|
     namespace app_name do
