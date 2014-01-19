@@ -12,8 +12,15 @@ describe HerokuCommands do
   
   context "#heroku_run" do
     it "runs the given command on the heroku server" do
-      expect_command("heroku run db:migrate --app my-app")
-      commands.heroku_run("db:migrate", "my-app")
+      expect_command("heroku run rake db:migrate --app my-app")
+      commands.heroku_run("rake db:migrate", "my-app")
+    end
+  end
+  
+  context "#heroku_migrate" do
+    it "runs rake db:migrate on the heroku server" do
+      expect_command("heroku run rake db:migrate --app my-app")
+      commands.heroku_migrate("my-app")
     end
   end
 end
