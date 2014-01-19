@@ -1,6 +1,6 @@
 require 'heroploy/git_commands'
 require 'heroploy/heroku_commands'
-require 'heroploy/deploy_config'
+require 'heroploy/config/deploy_config'
 
 namespace :heroploy do
   include GitCommands
