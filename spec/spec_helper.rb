@@ -1,6 +1,9 @@
+require 'simplecov'
 require 'coveralls'
-Coveralls.wear! do
-  add_filter '/spec/'
+
+SimpleCov.formatter = Coveralls::SimpleCov::Formatter
+SimpleCov.start do
+  add_filter 'spec'
 end
     
 require 'factory_girl'
