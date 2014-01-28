@@ -8,16 +8,23 @@ describe Commands::Checks do
   let(:commands) { Object.new.extend(Commands::Checks) }
 
   describe "#check_remote" do
+    it "invokes git_remote_exists? to check the remote" do
+      expect(commands).to receive(:git_remote_exists?).with("my-remote").and_return(true)
+      commands.check_remote("my-remote")      
+    end
+    
     context "if the remote exists" do
+      before { commands.stub(:git_remote_exists?).with("my-remote").and_return(true) }
+
       it "executes successfully" do
-        expect(commands).to receive(:git_remote_exists?).with("my-remote").and_return(true)
         commands.check_remote("my-remote")
       end
     end
     
     context "if the remote doesn't exist" do
+      before { commands.stub(:git_remote_exists?).with("my-remote").and_return(false) }
+      
       it "raises an error" do
-        commands.stub(:git_remote_exists?).with("my-remote").and_return(false)
         expect{
           commands.check_remote("my-remote")
         }.to raise_error("Could not find remote 'my-remote'")
