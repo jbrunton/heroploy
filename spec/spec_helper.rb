@@ -1,5 +1,5 @@
 require 'coveralls'
-Coveralls.wear!('rails')
+Coveralls.wear!
 
 require 'factory_girl'
 
