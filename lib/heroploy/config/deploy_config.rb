@@ -19,6 +19,6 @@ class DeployConfig
   end
   
   def self.load
-    DeployConfig.parse(YAML::load(File.open('.heroploy.yml')))
+    DeployConfig.parse(YAML::load(File.open('config/heroploy.yml')))
   end
 end
