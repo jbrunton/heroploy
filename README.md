@@ -22,23 +22,23 @@ Or install it yourself as:
 
 ## Usage
 
-Add a .heroploy file in your application's root directory which describes the Heroku apps you will deploy to, and the checks you would like when deploying to each.
+Add a ```heroploy.yml``` file to your application's config directory which describes the Heroku apps you will deploy to, and the checks you would like when deploying to each.
 
 For example:
 
 ```yaml
-apps:
+environments:
   development:
-    heroku: my-app-development
+    heroku: my-development-app
 
   staging:
-    heroku: my-app-staging
+    heroku: my-staging-app
     checks:
       pushed: true
       branch: master
 
   production:
-    heroku: my-app-production
+    heroku: my-production-app
     tag: 'RELEASE_%Y%m%dT%H%M%S%z'
     checks:
       pushed: true
@@ -47,7 +47,7 @@ apps:
 ```
 
 This file:
-* Describes ```development```, ```staging``` and ```production``` deployment rules for three Heroku apps (named ```my-app-development```, ```my-app-staging``` and ```my-app-production``` on Heroku).
+* Describes ```development```, ```staging``` and ```production``` deployment rules for three Heroku apps (named ```my-development-app```, ```my-staging-app``` and ```my-production-app``` on Heroku).
 * Allows any branch to be pushed directly to ```development```.
 * Only allows ```master``` to be pushed to ```staging```, and requires all changes to have first been pushed to ```origin```.
 * Only allows deployment to ```production``` if the changes have first been staged on ```staging```.
