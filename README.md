@@ -3,6 +3,7 @@
 [![Build Status](https://travis-ci.org/jbrunton/heroploy.png?branch=master)](https://travis-ci.org/jbrunton/heroploy)
 [![Dependency Status](https://gemnasium.com/jbrunton/heroploy.png)](https://gemnasium.com/jbrunton/heroploy)
 [![Code Climate](https://codeclimate.com/github/jbrunton/heroploy.png)](https://codeclimate.com/github/jbrunton/heroploy)
+[![Coverage Status](https://coveralls.io/repos/jbrunton/heroploy/badge.png)](https://coveralls.io/r/jbrunton/heroploy)
 
 A few helpful rake tasks to manage deploying Rails apps to development, staging and production Heroku servers.
 
