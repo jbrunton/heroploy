@@ -28,6 +28,7 @@ module Heroploy
         task :pushed do
           check_pushed(current_branch)
         end
+        all_tasks << :pushed
       end
 
       if env_config.checks.branch then

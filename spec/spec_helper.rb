@@ -1,7 +1,7 @@
 require 'factory_girl'
 
 require 'heroploy'
-require 'heroploy/tasks/task_lib'
+require 'heroploy/tasks/deploy_task_lib'
 
 require 'support/shell_support'
 require 'support/shared_contexts/rake'
