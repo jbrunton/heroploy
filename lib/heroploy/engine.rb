@@ -1,7 +1,7 @@
 require 'rails'
 
 module Heroploy
-  class Railtie < Rails::Railtie
+  class Engine < ::Rails::Engine
     rake_tasks do
       load 'heroploy/tasks/tasks.rake'
     end

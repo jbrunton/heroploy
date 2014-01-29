@@ -1,0 +1,8 @@
+Description:
+    Installs a heroploy config file
+
+Example:
+    rails generate heroploy:install
+
+    This will create:
+        config/heroploy.yml
