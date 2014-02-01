@@ -57,7 +57,7 @@ module Heroploy
     def define_heroku_tasks
       desc "run database migrations on #{env_config.name}"
       task :migrate do
-        heroku_migrate(env_config.heroku)
+        heroku_migrate(env_config.app)
       end
 
       desc "deploy to #{env_config.name}"
