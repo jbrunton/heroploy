@@ -20,7 +20,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "bundler", "~> 1.3"
   spec.add_development_dependency "rake"
-  spec.add_development_dependency "rails", ">= 3.0.0"
+  spec.add_development_dependency "rails"
   spec.add_development_dependency "rspec"
   spec.add_development_dependency "factory_girl"
   spec.add_development_dependency "generator_spec"
