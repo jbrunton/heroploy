@@ -34,16 +34,16 @@ Here's an example ```heroploy.yml``` file:
 ```yaml
 environments:
   development:
-    heroku: my-development-app
+    app: my-development-app
 
   staging:
-    heroku: my-staging-app
+    app: my-staging-app
     checks:
       pushed: true
       branch: master
 
   production:
-    heroku: my-production-app
+    app: my-production-app
     tag: 'RELEASE_%Y%m%dT%H%M%S%z'
     checks:
       pushed: true

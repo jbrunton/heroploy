@@ -3,13 +3,13 @@ environments:
 # Add a development environment, to which you can deploy anything:
 #
 # development:
-#   heroku: my-development-app
+#   app: my-development-app
 
 # You may also want a staging environment, to which you can only deploy pushed
 # commits from master:
 #
 # staging:
-#   heroku: my-staging-app
+#   app: my-staging-app
 #   checks:
 #     pushed: true
 #     branch: master
@@ -18,7 +18,7 @@ environments:
 # been staged:
   
 # production:
-#   heroku: my-production-app
+#   app: my-production-app
 #   tag: 'RELEASE_%Y%m%dT%H%M%S%z'
 #   checks:
 #     pushed: true
@@ -28,7 +28,7 @@ environments:
 # Finally, if you have a single Heroku app, this should work for now:
 
   heroku:
-    heroku: my-heroku-app-name
+    app: my-heroku-app-name
     tag: 'RELEASE_%Y%m%dT%H%M%S%z'
     checks:
       pushed: true
