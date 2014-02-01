@@ -5,6 +5,6 @@ namespace :heroploy do
     deploy_config = DeployConfig.load  
     Heroploy::DeployTaskLib.new(deploy_config)
   rescue Errno::ENOENT
-    puts "Warning: no config file present for Heroploy.  Run 'rails generator heroploy:install' or add a heroploy.yml file to your project."
+    puts "Warning: no config file present for Heroploy.  Run 'rails generate heroploy:install' or add a heroploy.yml file to your project."
   end
 end
