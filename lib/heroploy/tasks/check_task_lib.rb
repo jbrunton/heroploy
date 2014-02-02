@@ -4,8 +4,6 @@ require 'heroploy/commands/heroku'
 require 'heroploy/commands/git'
 require 'heroploy/commands/checks'
 
-require 'heroploy/config/deploy_config'
-
 module Heroploy
   class CheckTaskLib < ::Rake::TaskLib
     include ::Rake::DSL if defined?(::Rake::DSL)

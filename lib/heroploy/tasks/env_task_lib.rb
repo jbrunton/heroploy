@@ -4,7 +4,6 @@ require 'heroploy/commands/heroku'
 require 'heroploy/commands/git'
 require 'heroploy/commands/checks'
 
-require 'heroploy/config/deploy_config'
 require 'heroploy/tasks/check_task_lib'
 
 module Heroploy
@@ -15,17 +14,17 @@ module Heroploy
     include Commands::Heroku
     include Commands::Checks
     
-    attr_accessor :deploy_config
-    attr_accessor :env_config
+    attr_accessor :deployment_config
+    attr_accessor :env
     
-    def initialize(deploy_config, env_config)
-      @deploy_config = deploy_config
-      @env_config = env_config
+    def initialize(deployment_config, env)
+      @deployment_config = deployment_config
+      @env = env
       define
     end
 
     def define
-      namespace env_config.name do
+      namespace env.name do
         define_check_tasks
         define_git_tasks
         define_heroku_tasks
@@ -34,33 +33,33 @@ module Heroploy
     
     def define_check_tasks
       namespace :check do
-        CheckTaskLib.new(deploy_config, env_config)
+        CheckTaskLib.new(deployment_config, env)
       end
     end
     
     def define_git_tasks
-      desc "push the current branch to master on #{env_config.name}"
+      desc "push the current branch to master on #{env.name}"
       task :push do
-        git_push_to_master(env_config.remote, current_branch)
+        git_push_to_master(env.remote, current_branch)
       end
 
-      desc "tag the deployment to #{env_config.name}"
+      desc "tag the deployment to #{env.name}"
       task :tag do
-        if env_config.tag then
-          tag = DateTime.now.strftime(env_config.tag)
-          git_tag(tag, "Deployed #{current_branch} to #{env_config.name}")
+        if env.tag then
+          tag = DateTime.now.strftime(env.tag)
+          git_tag(tag, "Deployed #{current_branch} to #{env.name}")
           git_push_tag(tag)
         end
       end
     end
     
     def define_heroku_tasks
-      desc "run database migrations on #{env_config.name}"
+      desc "run database migrations on #{env.name}"
       task :migrate do
-        heroku_migrate(env_config.app)
+        heroku_migrate(env.app)
       end
 
-      desc "deploy to #{env_config.name}"
+      desc "deploy to #{env.name}"
       task :deploy => ['check:all', :push, :migrate, :tag]
     end
   end

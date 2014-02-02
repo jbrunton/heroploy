@@ -1,11 +1,11 @@
 require 'spec_helper'
 
-describe Commands::Checks do
+describe Heroploy::Commands::Checks do
   before(:each) do
     stub_shell
   end
   
-  let(:commands) { Object.new.extend(Commands::Checks) }
+  let(:commands) { Object.new.extend(Heroploy::Commands::Checks) }
 
   describe "#check_remote" do
     it "invokes git_remote_exists? to check the remote" do

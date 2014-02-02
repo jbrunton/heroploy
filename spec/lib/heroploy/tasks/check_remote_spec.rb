@@ -1,5 +1,5 @@
 describe "check:remote" do
-  let(:environment) { build(:env_config, :production) }
+  let(:environment) { build(:environment, :production) }
   include_context "rake"
   
   it "invokes :check_remote" do

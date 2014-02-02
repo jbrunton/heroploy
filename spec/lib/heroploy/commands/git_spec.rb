@@ -1,11 +1,11 @@
 require 'spec_helper'
 
-describe Commands::Git do
+describe Heroploy::Commands::Git do
   before(:each) do
     stub_shell
   end
   
-  let(:commands) { Object.new.extend(Commands::Git) }
+  let(:commands) { Object.new.extend(Heroploy::Commands::Git) }
   
   context "#git_fetch" do
     it "executes a git fetch" do

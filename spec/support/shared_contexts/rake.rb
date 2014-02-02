@@ -11,7 +11,7 @@ shared_context "rake" do
     elsif defined?(environments)
       env_name = environments[0].name
     else
-      env_name = deploy_config.environments[0].name
+      env_name = deployment_config.environments[0].name
     end
 
     "#{env_name}:#{self.class.top_level_description}"
@@ -26,15 +26,15 @@ shared_context "rake" do
     
     unless defined?(deploy_config)
       if defined?(environment)
-        deploy_config = build(:deploy_config, environments: [environment])
+        deployment_config = build(:deployment_config, environments: [environment])
       elsif defined?(environments)
-        deploy_config = build(:deploy_config, environments: environments)
+        deployment_config = build(:deployment_config, environments: environments)
       else
-        deploy_config = build(:deploy_config)
+        deployment_config = build(:deployment_config)
       end
     end
 
-    Heroploy::DeployTaskLib.new(deploy_config) 
+    Heroploy::DeployTaskLib.new(deployment_config) 
 
     Rake::Task.tasks.each do |task|
       if task.name != task_name

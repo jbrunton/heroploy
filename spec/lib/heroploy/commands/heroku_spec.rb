@@ -1,11 +1,11 @@
 require 'spec_helper'
 
-describe Commands::Heroku do
+describe Heroploy::Commands::Heroku do
   before(:each) do
     stub_shell
   end
   
-  let(:commands) { Object.new.extend(Commands::Heroku) }
+  let(:commands) { Object.new.extend(Heroploy::Commands::Heroku) }
   
   context "#heroku_exec" do
     it "executes the heroku command for the given app" do

@@ -1,5 +1,5 @@
 describe "check:all" do
-  let(:environment) { build(:env_config, :production) }
+  let(:environment) { build(:environment, :production) }
 
   context "in all cases" do
     include_context "rake"

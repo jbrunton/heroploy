@@ -1,6 +1,6 @@
 describe "check:staged" do
-  let(:production) { build(:env_config, :production) }
-  let(:staging) { build(:env_config, :staging, remote: "my-staging-remote") }
+  let(:production) { build(:environment, :production) }
+  let(:staging) { build(:environment, :staging, remote: "my-staging-remote") }
   let(:environments) { [production, staging] }
   
   include_context "rake"

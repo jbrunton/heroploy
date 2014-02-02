@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :checks_config do
+  factory :environment_checks, :class => Heroploy::Config::EnvironmentChecks do
     pushed false
     staged false
     branch nil
@@ -23,24 +23,24 @@ FactoryGirl.define do
     end
   end
   
-  factory :env_config do    
-    checks { build(:checks_config) }
+  factory :environment, :class => Heroploy::Config::Environment do    
+    checks { build(:environment_checks) }
     
     [:development, :staging, :production].each do |t|
       trait t do
         name t.to_s
         remote t.to_s
-        checks { build(:checks_config, t) }
+        checks { build(:environment_checks, t) }
       end
     end
   end
   
-  factory :deploy_config do
+  factory :deployment_config, :class => Heroploy::Config::DeploymentConfig do
     environments {
       [
-        build(:env_config, :development),
-        build(:env_config, :staging),
-        build(:env_config, :production)
+        build(:environment, :development),
+        build(:environment, :staging),
+        build(:environment, :production)
       ]
     }
   end
