@@ -115,4 +115,11 @@ describe Heroploy::Commands::Git do
       commands.git_tag("my-tag", "my message")
     end
   end
+  
+  context "#git_push_tag" do
+    it "pushes the tag to origin" do
+      expect_command("git push origin my-tag")
+      commands.git_push_tag("my-tag")
+    end
+  end
 end
