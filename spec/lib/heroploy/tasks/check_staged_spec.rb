@@ -1,6 +1,6 @@
 describe "check:staged" do
-  let(:production) { build(:env_config, :production) }
-  let(:staging) { build(:env_config, :staging, remote: "my-staging-remote") }
+  let(:production) { build(:environment, :production) }
+  let(:staging) { build(:environment, :staging, remote: "my-staging-remote") }
   let(:environments) { [production, staging] }
   
   include_context "rake"
@@ -9,9 +9,9 @@ describe "check:staged" do
     before { production.checks.staged = 'staging' }
 
     it "invokes :check_pushed" do
-      Heroploy::CheckTaskLib.any_instance.stub(:current_branch).and_return("my-branch")
+      Heroploy::Tasks::CheckTaskLib.any_instance.stub(:current_branch).and_return("my-branch")
 
-      expect_any_instance_of(Heroploy::CheckTaskLib).to receive(:check_staged).with("my-staging-remote", "my-branch", "staging")
+      expect_any_instance_of(Heroploy::Tasks::CheckTaskLib).to receive(:check_staged).with("my-staging-remote", "my-branch", "staging")
 
       task.invoke
     end
