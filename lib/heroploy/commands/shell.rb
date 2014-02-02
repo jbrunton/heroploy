@@ -1,11 +1,13 @@
-class Shell
-  extend FileUtils
+module Heroploy
+  class Shell
+    extend FileUtils
 
-  def self.eval(cmd)
-    `#{cmd}`
-  end
+    def self.eval(cmd)
+      `#{cmd}`
+    end
 
-  def self.exec(cmd)
-    sh cmd
+    def self.exec(cmd)
+      sh cmd
+    end
   end
 end
