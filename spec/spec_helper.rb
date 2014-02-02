@@ -1,6 +1,7 @@
 require 'coveralls'
 Coveralls.wear! do
   add_filter '/spec/'
+  add_filter 'lib/heroploy/engine.rb'
 end
     
 require 'factory_girl'
