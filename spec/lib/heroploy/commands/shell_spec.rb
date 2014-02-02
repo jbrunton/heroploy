@@ -13,4 +13,11 @@ describe Heroploy::Shell do
       expect(Heroploy::Shell.eval('date')).to eq(expected_output)
     end
   end
+  
+  context "#exec" do
+    it "executes the given command on the shell" do
+      expect(Heroploy::Shell).to receive(:sh).with('puts "foo"')
+      Heroploy::Shell.exec('puts "foo"')
+    end
+  end
 end
