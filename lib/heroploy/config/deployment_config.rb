@@ -4,6 +4,8 @@ require 'heroploy/config/environment'
 module Heroploy
   module Config
     class DeploymentConfig
+      # A list of the environments defined by the configuration file
+      # @return [Array<Environment>]
       attr_accessor :environments
   
       # Returns the {Environment} instance for the given name, or nil if none is found
@@ -24,6 +26,8 @@ module Heroploy
       end
   
       # Instantiates and returns a new instance of {DeploymentConfig DeploymentConfig} initialized with the YAML config file found at 'config/heroploy.yml'
+      #
+      # @return [DeploymentConfig]
       def self.load
         DeploymentConfig.new(YAML::load(File.open('config/heroploy.yml')))
       end
