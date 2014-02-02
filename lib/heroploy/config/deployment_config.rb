@@ -5,11 +5,11 @@ module Heroploy
   module Config
     class DeploymentConfig
       attr_accessor :environments
-  
+
       def [](env_name)
         environments.select{ |env| env.name == env_name }.first
       end
-  
+
       def initialize(attrs = {})
         unless attrs['environments'].nil?
           @environments = attrs['environments'].map { |name, attrs| Environment.new(name, attrs) }

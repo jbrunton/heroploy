@@ -52,6 +52,7 @@ environments:
 ```
 
 This file:
+
 * Describes ```development```, ```staging``` and ```production``` deployment rules for three Heroku apps (named ```my-development-app```, ```my-staging-app``` and ```my-production-app``` on Heroku).
 * Allows any branch to be pushed directly to ```development```.
 * Only allows ```master``` to be pushed to ```staging```, and requires all changes to have first been pushed to ```origin```.

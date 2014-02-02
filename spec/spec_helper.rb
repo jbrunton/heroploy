@@ -19,6 +19,8 @@ require 'support/shell_support'
 require 'support/shared_contexts/rake'
 require 'support/shared_contexts/generator'
 
+require 'support/customer_matchers/environment_matcher'
+
 FactoryGirl.find_definitions
 
 TMP_ROOT = Pathname.new(File.expand_path('../tmp', __FILE__))
@@ -29,4 +31,7 @@ RSpec.configure do |config|
   config.include FactoryGirl::Syntax::Methods
   
   config.include ShellSupport
+  config.include CustomMatchers
 end
+
+
