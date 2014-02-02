@@ -34,7 +34,7 @@ shared_context "rake" do
       end
     end
 
-    Heroploy::DeployTaskLib.new(deployment_config) 
+    Heroploy::Tasks::DeployTaskLib.new(deployment_config) 
 
     Rake::Task.tasks.each do |task|
       if task.name != task_name
