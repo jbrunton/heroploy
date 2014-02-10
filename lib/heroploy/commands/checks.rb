@@ -28,6 +28,14 @@ module Heroploy
           raise "Changes not yet staged on #{env_name}"
         end
       end
+      
+      def check_config(config_vars)
+        config_vars.required.each do |key|
+          unless config_vars.common.keys.include?(key)
+            raise "Missing config value for '#{key}'"
+          end
+        end
+      end
     end
   end
 end

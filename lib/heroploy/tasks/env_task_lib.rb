@@ -59,9 +59,14 @@ module Heroploy
         task :migrate do
           heroku_migrate(env.app)
         end
+        
+        desc "set config variables"
+        task :config do
+          heroku_config_set(deployment_config.variables.common, env.app)
+        end
 
         desc "deploy to #{env.name}"
-        task :deploy => ['check:all', :push, :migrate, :tag]
+        task :deploy => ['check:all', :push, :config, :migrate, :tag]
       end
     end
   end

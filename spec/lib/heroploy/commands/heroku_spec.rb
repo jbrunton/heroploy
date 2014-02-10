@@ -27,4 +27,11 @@ describe Heroploy::Commands::Heroku do
       commands.heroku_migrate("my-app")
     end    
   end
+  
+  context "#heroku_config_set" do
+    it "sets the value for the given config variable" do
+      expect_command("heroku config:set foo=bar --app my-app")
+      commands.heroku_config_set({"foo" => "bar"}, "my-app")
+    end
+  end
 end

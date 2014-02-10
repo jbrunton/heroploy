@@ -1,10 +1,6 @@
 require 'spec_helper'
 
 describe Heroploy::Config::EnvironmentChecks do
-  attr_accessor :pushed
-  attr_accessor :branch
-  attr_accessor :staged
-  
   describe "#initialize" do
     context "it initializes the accessors" do
       let(:pushed) { true }

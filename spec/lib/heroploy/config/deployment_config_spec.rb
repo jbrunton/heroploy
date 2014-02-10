@@ -3,7 +3,15 @@ require 'spec_helper'
 describe Heroploy::Config::DeploymentConfig do
   before(:each) { stub_shell }
   
-  let(:attrs) { {'environments' => {'staging' => {}, 'production' => {}}} }
+  let(:attrs) do
+    {
+      'environments' => {'staging' => {}, 'production' => {}},
+      'variables' => {
+        'required' => ['my-var'],
+        'common' => {'my-var' => 'some-value'}
+      }
+    }
+  end
   
   subject(:deployment_config) { Heroploy::Config::DeploymentConfig.new(attrs) }
   
@@ -11,6 +19,11 @@ describe Heroploy::Config::DeploymentConfig do
     context "it initializes its environments" do
       its(:environments) { should include an_environment_named(:staging) }
       its(:environments) { should include an_environment_named(:production) }
+    end
+    
+    context "its initializes its environment variables" do
+      its('variables.required') { should eq(['my-var']) }
+      its('variables.common') { should eq({'my-var' => 'some-value'}) }
     end
   end
   
@@ -27,16 +40,28 @@ describe Heroploy::Config::DeploymentConfig do
   context ".load" do
     let(:yaml_config) do
       <<-END
+      variables:
+        required:
+          - my-var
+        common:
+          my-var: some-value
       environments:
         heroku:
           app: my-app
       END
     end
     
-    it "returns a new instance of DeploymentConfig initialized by the heroploy config file" do
-      File.stub(:open).with('config/heroploy.yml').and_return(yaml_config)
-      deployment_config = Heroploy::Config::DeploymentConfig.load
+    before { File.stub(:open).with('config/heroploy.yml').and_return(yaml_config) }
+    
+    let(:deployment_config) { deployment_config = Heroploy::Config::DeploymentConfig.load }
+    
+    it "it initializes the list of environments" do
       expect(deployment_config.environments).to include an_environment_named(:heroku)
+    end
+    
+    it "initializes the environment variables" do
+      expect(deployment_config.variables.required).to eq(['my-var'])
+      expect(deployment_config.variables.common).to eq({ 'my-var' => 'some-value' })
     end
   end
 end
