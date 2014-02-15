@@ -95,4 +95,24 @@ describe Heroploy::Commands::Checks do
       end
     end
   end
+  
+  describe "#check_config" do
+    context "if all the required variables have values" do
+      let(:attrs) { {'required' => ['my-var'], 'common' => {'my-var' => 'some-value'} } }
+
+      it "executes successfully" do
+        commands.check_config(Heroploy::Config::EnvVars.new(attrs))
+      end
+    end
+    
+    context "if a required variable is missing a value" do
+      let(:attrs) { {'required' => ['my-var'], 'common' => {} } }
+      
+      it "raises an error" do
+        expect{
+          commands.check_config(Heroploy::Config::EnvVars.new(attrs))
+        }.to raise_error("Missing config value for 'my-var'")
+      end
+    end
+  end
 end

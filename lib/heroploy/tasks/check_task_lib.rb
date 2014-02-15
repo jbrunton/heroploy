@@ -29,6 +29,7 @@ module Heroploy
         define_pushed_check
         define_branch_check
         define_staged_check
+        define_config_check
         define_all_check
       end
     
@@ -72,6 +73,14 @@ module Heroploy
           end
           @defined_tasks << :staged
         end
+      end
+      
+      def define_config_check
+        desc "check all required config variables are defined"
+        task :config do
+          check_config(deploy_config.variables)
+        end
+        @defined_tasks << :config
       end
     
       def define_all_check
