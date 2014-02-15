@@ -35,6 +35,11 @@ FactoryGirl.define do
     end
   end
   
+  factory :env_vars, :class => Heroploy::Config::EnvVars do
+    required { Hash.new }
+    common { Hash.new }
+  end
+  
   factory :deployment_config, :class => Heroploy::Config::DeploymentConfig do
     environments {
       [
@@ -43,5 +48,7 @@ FactoryGirl.define do
         build(:environment, :production)
       ]
     }
+    
+    variables { build(:env_vars) }
   end
 end

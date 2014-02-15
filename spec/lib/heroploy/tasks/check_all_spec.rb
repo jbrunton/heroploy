@@ -4,6 +4,7 @@ describe "check:all" do
   context "in all cases" do
     include_context "rake"
     its(:prerequisites) { should include('remote') }
+    its(:prerequisites) { should include('config') }
   end
 
   context "if checks.pushed is set" do

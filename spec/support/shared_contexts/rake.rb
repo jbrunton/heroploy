@@ -24,13 +24,22 @@ shared_context "rake" do
   before(:each) do
     Rake::Task.clear
     
+    unless defined?(env_vars)
+      puts "*** variables undefined"
+      env_vars = build(:env_vars)
+    else
+      puts "*** env_vars defined: #{env_vars.to_s}"
+      puts "*** nil: #{nil.to_s}"
+    end
+    
     unless defined?(deploy_config)
+      puts "*** generating deploy_config"
       if defined?(environment)
-        deployment_config = build(:deployment_config, environments: [environment])
+        deployment_config = build(:deployment_config, environments: [environment], variables: env_vars)
       elsif defined?(environments)
-        deployment_config = build(:deployment_config, environments: environments)
+        deployment_config = build(:deployment_config, environments: environments, variables: env_vars)
       else
-        deployment_config = build(:deployment_config)
+        deployment_config = build(:deployment_config, variables: env_vars)
       end
     end
 
