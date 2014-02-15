@@ -1,12 +1,12 @@
 module Heroploy
   module Config  
-    class EnvVars
+    class SharedEnv
       attr_accessor :required
-      attr_accessor :common
+      attr_accessor :variables
       
       def initialize(attrs = {})
         @required = attrs['required']
-        @common = attrs['common']
+        @variables = attrs['variables']
       end
     end
   end

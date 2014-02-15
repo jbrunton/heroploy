@@ -6,9 +6,9 @@ describe Heroploy::Config::DeploymentConfig do
   let(:attrs) do
     {
       'environments' => {'staging' => {}, 'production' => {}},
-      'variables' => {
+      'common' => {
         'required' => ['my-var'],
-        'common' => {'my-var' => 'some-value'}
+        'variables' => {'my-var' => 'some-value'}
       }
     }
   end
@@ -21,9 +21,9 @@ describe Heroploy::Config::DeploymentConfig do
       its(:environments) { should include an_environment_named(:production) }
     end
     
-    context "its initializes its environment variables" do
-      its('variables.required') { should eq(['my-var']) }
-      its('variables.common') { should eq({'my-var' => 'some-value'}) }
+    context "it initializes its environment variables" do
+      its('shared_env.required') { should eq(['my-var']) }
+      its('shared_env.variables') { should eq({'my-var' => 'some-value'}) }
     end
   end
   
@@ -40,10 +40,10 @@ describe Heroploy::Config::DeploymentConfig do
   context ".load" do
     let(:yaml_config) do
       <<-END
-      variables:
+      common:
         required:
           - my-var
-        common:
+        variables:
           my-var: some-value
       environments:
         heroku:
@@ -60,8 +60,8 @@ describe Heroploy::Config::DeploymentConfig do
     end
     
     it "initializes the environment variables" do
-      expect(deployment_config.variables.required).to eq(['my-var'])
-      expect(deployment_config.variables.common).to eq({ 'my-var' => 'some-value' })
+      expect(deployment_config.shared_env.required).to eq(['my-var'])
+      expect(deployment_config.shared_env.variables).to eq({ 'my-var' => 'some-value' })
     end
   end
 end

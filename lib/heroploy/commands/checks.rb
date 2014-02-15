@@ -29,9 +29,9 @@ module Heroploy
         end
       end
       
-      def check_config(config_vars)
-        config_vars.required.each do |key|
-          unless config_vars.common.keys.include?(key)
+      def check_config(shared_env)
+        shared_env.required.each do |key|
+          unless shared_env.variables.keys.include?(key)
             raise "Missing config value for '#{key}'"
           end
         end
