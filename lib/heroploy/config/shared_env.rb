@@ -5,8 +5,8 @@ module Heroploy
       attr_accessor :variables
       
       def initialize(attrs = {})
-        @required = attrs['required']
-        @variables = attrs['variables']
+        @required = attrs['required'] || []
+        @variables = attrs['variables'] || {}
       end
     end
   end

@@ -97,22 +97,40 @@ describe Heroploy::Commands::Checks do
   end
   
   describe "#check_config" do
-    context "if all the required variables have values" do
-      let(:attrs) { {'required' => ['my-var'], 'variables' => {'my-var' => 'some-value'}} }
-
-      it "executes successfully" do
-        commands.check_config(Heroploy::Config::SharedEnv.new(attrs))
-      end
-    end
-    
-    context "if a required variable is missing a value" do
-      let(:attrs) { {'required' => ['my-var'], 'variables' => {}} }
+    context "given a required variable" do
+      let(:required) { ['my-var'] }
       
-      it "raises an error" do
-        expect{
-          commands.check_config(Heroploy::Config::SharedEnv.new(attrs))
-        }.to raise_error("Missing config value for 'my-var'")
+      context "if the shared environment defines the variable" do
+        let(:shared_attrs) { {'required' => required, 'variables' => {'my-var' => 'some-value'}} }
+        let(:env_vars) { {} }
+        let(:shared_env) { Heroploy::Config::SharedEnv.new(shared_attrs) }
+      
+        it "it executes successfully if the variables " do
+          commands.check_config(shared_env, env_vars)
+        end
       end
-    end
+      
+      context "if the Heroku environment defines the variable" do
+        let(:shared_attrs) { {'required' => required, 'variables' => {}} }
+        let(:env_vars) { {'my-var' => 'some-value'} }
+        let(:shared_env) { Heroploy::Config::SharedEnv.new(shared_attrs) }
+      
+        it "it executes successfully if the variables " do
+          commands.check_config(shared_env, env_vars)
+        end
+      end
+      
+      context "if a required variable is missing a value" do
+        let(:shared_attrs) { {'required' => required, 'variables' => {}} }
+        let(:env_vars) { {} }
+        let(:shared_env) { Heroploy::Config::SharedEnv.new(shared_attrs) }
+
+        it "raises an error" do
+          expect{
+            commands.check_config(shared_env, env_vars)
+          }.to raise_error("Missing config value for 'my-var'")
+        end
+      end
+    end    
   end
 end

@@ -59,7 +59,7 @@ describe Heroploy::Config::DeploymentConfig do
       expect(deployment_config.environments).to include an_environment_named(:heroku)
     end
     
-    it "initializes the environment variables" do
+    it "initializes the shared environment variables" do
       expect(deployment_config.shared_env.required).to eq(['my-var'])
       expect(deployment_config.shared_env.variables).to eq({ 'my-var' => 'some-value' })
     end

@@ -8,7 +8,8 @@ describe Heroploy::Config::Environment do
       let(:remote_name) { 'my-remote' }
       let(:app_name) { 'my-app' }
       let(:tag) { 'my-tag' }
-      let(:attrs) { {'remote' => remote_name, 'app' => app_name, 'tag' => tag} }
+      let(:variables) { {'my-var' => 'some-value'} }
+      let(:attrs) { {'remote' => remote_name, 'app' => app_name, 'tag' => tag, 'variables' => variables} }
       
       subject(:environment) { Heroploy::Config::Environment.new(env_name, attrs) }
 
@@ -16,6 +17,7 @@ describe Heroploy::Config::Environment do
       its(:remote) { should eq(remote_name) }
       its(:app) { should eq(app_name) }
       its(:tag) { should eq(tag) }
+      its(:variables) { should eq(variables) }
       its(:checks) { should be_instance_of(Heroploy::Config::EnvironmentChecks) }      
     end
     
