@@ -78,7 +78,7 @@ module Heroploy
       def define_config_check
         desc "check all required config variables are defined"
         task :config => :load_remote_configs do
-          check_config(deploy_config.variables)
+          check_config(deploy_config.shared_env, env_config)
         end
         @defined_tasks << :config
       end

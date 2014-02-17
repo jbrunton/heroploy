@@ -21,9 +21,7 @@ module Heroploy
         unless attrs['load_configs'].nil?
           @remote_configs = attrs['load_configs'].map { |name, remote_config_attrs| RemoteConfig.new(name, remote_config_attrs) }
         end
-        unless attrs['common'].nil?
-          @shared_env = SharedEnv.new(attrs['common'])
-        end
+        @shared_env = SharedEnv.new(attrs['common'])
       end
   
       def self.load(filename = 'config/heroploy.yml')
