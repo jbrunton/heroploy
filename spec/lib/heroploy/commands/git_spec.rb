@@ -122,4 +122,11 @@ describe Heroploy::Commands::Git do
       commands.git_push_tag("my-tag")
     end
   end
+  
+  context "#git_clone" do
+    it "clones the given repository" do
+      expect_command("git clone git.example.com:my-repo destination-path")
+      commands.git_clone("git.example.com:my-repo", "destination-path")
+    end
+  end
 end

@@ -43,6 +43,17 @@ module Heroploy
       def git_push_tag(tag)
         Shell.exec("git push origin #{tag}")
       end
+      
+      def git_clone(repository, destination)
+        Dir.mktmpdir do |dir|
+          Dir.chdir(dir) do
+            Shell.exec("git clone #{repository} #{destination}")
+            if block_given?
+              yield
+            end
+          end
+        end
+      end
     end
   end
 end

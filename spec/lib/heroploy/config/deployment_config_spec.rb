@@ -5,7 +5,12 @@ describe Heroploy::Config::DeploymentConfig do
   
   let(:attrs) do
     {
-      'environments' => {'staging' => {}, 'production' => {}},
+      'environments' => {
+        'staging' => {},
+        'production' => {
+          'variables' => {'foo' => 'foo'}
+        }
+      },
       'common' => {
         'required' => ['my-var'],
         'variables' => {'my-var' => 'some-value'}
@@ -15,7 +20,7 @@ describe Heroploy::Config::DeploymentConfig do
   
   subject(:deployment_config) { Heroploy::Config::DeploymentConfig.new(attrs) }
   
-  context "#initialize" do
+  describe "#initialize" do
     context "it initializes its environments" do
       its(:environments) { should include an_environment_named(:staging) }
       its(:environments) { should include an_environment_named(:production) }
@@ -27,7 +32,7 @@ describe Heroploy::Config::DeploymentConfig do
     end
   end
   
-  context "#[]" do
+  describe "#[]" do
     it "returns the environment with the given name, if one exists" do
       expect(deployment_config['staging']).to be_an_environment_named(:staging)
     end
@@ -37,7 +42,21 @@ describe Heroploy::Config::DeploymentConfig do
     end
   end
   
-  context ".load" do
+  describe "#merge_config" do
+    let(:other_config) do
+      build(:deployment_config, environments: [
+        build(:environment, :production, variables: {'bar' => 'bar'})
+      ])
+    end
+    
+    it "merges the environment variables defined by the other config" do
+      deployment_config.merge_config(other_config)
+      expect(deployment_config['production'].variables).to include('foo' => 'foo')
+      expect(deployment_config['production'].variables).to include('bar' => 'bar')
+    end
+  end
+  
+  describe ".load" do
     let(:yaml_config) do
       <<-END
       common:
