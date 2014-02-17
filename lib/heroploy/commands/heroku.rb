@@ -17,8 +17,9 @@ module Heroploy
         heroku_run("rake db:migrate", app_name)
       end
       
-      def heroku_config_set(vars, app_name)
-        vars_string = vars.collect.map{|key,value| "#{key}=#{value}"}.join(" ")
+      def heroku_config_set(shared_vars, env_vars, app_name)
+        merged_vars = shared_vars.merge(env_vars)
+        vars_string = merged_vars.collect.map{|key,value| "#{key}=#{value}"}.join(" ")
         heroku_exec("config:set #{vars_string}", app_name)
       end
     end

@@ -29,9 +29,11 @@ describe Heroploy::Commands::Heroku do
   end
   
   context "#heroku_config_set" do
-    it "sets the value for the given config variable" do
-      expect_command("heroku config:set foo=bar --app my-app")
-      commands.heroku_config_set({"foo" => "bar"}, "my-app")
+    it "sets the values for the given config variables" do
+      common_vars = {'foo' => 'foo'}
+      env_vars = {'bar' => 'bar'}
+      expect_command("heroku config:set foo=foo bar=bar --app my-app")
+      commands.heroku_config_set(common_vars, env_vars, "my-app")
     end
   end
 end

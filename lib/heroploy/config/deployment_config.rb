@@ -1,12 +1,12 @@
 require 'heroploy/config/deployment_config'
 require 'heroploy/config/environment'
-require 'heroploy/config/env_vars'
+require 'heroploy/config/shared_env'
 
 module Heroploy
   module Config
     class DeploymentConfig
       attr_accessor :environments
-      attr_accessor :variables
+      attr_accessor :shared_env
 
       def [](env_name)
         environments.select{ |env| env.name == env_name }.first
@@ -16,8 +16,8 @@ module Heroploy
         unless attrs['environments'].nil?
           @environments = attrs['environments'].map { |name, attrs| Environment.new(name, attrs) }
         end
-        unless attrs['variables'].nil?
-          @variables = EnvVars.new(attrs['variables'])
+        unless attrs['common'].nil?
+          @shared_env = SharedEnv.new(attrs['common'])
         end
       end
   
