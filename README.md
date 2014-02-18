@@ -23,6 +23,9 @@ Or install it yourself as:
 
 ## Usage
 
+**See [Configuring Heroploy](https://github.com/jbrunton/heroploy/wiki/Configuring-Heroploy) for a more detailed description of the options available.**
+
+
 Add a ```heroploy.yml``` file to your application's config directory which describes the Heroku apps you will deploy to, and the checks you would like when deploying to each.
 
 If you're running Rails, you can use this generator to add an example config file:
