@@ -61,8 +61,8 @@ module Heroploy
         end
         
         desc "set config variables"
-        task :config do
-          heroku_config_set(deployment_config.variables.common, env.app)
+        task :config => :load_remote_configs do
+          heroku_config_set(deployment_config.shared_env.variables, env.variables, env.app)
         end
 
         desc "deploy to #{env.name}"

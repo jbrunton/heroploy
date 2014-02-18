@@ -104,9 +104,10 @@ describe Heroploy::Commands::Checks do
         let(:shared_attrs) { {'required' => required, 'variables' => {'my-var' => 'some-value'}} }
         let(:env_vars) { {} }
         let(:shared_env) { Heroploy::Config::SharedEnv.new(shared_attrs) }
+        let(:env) { Heroploy::Config::Environment.new('my-env', {'variables' => env_vars}) }
       
         it "it executes successfully if the variables " do
-          commands.check_config(shared_env, env_vars)
+          commands.check_config(shared_env, env)
         end
       end
       
@@ -114,9 +115,10 @@ describe Heroploy::Commands::Checks do
         let(:shared_attrs) { {'required' => required, 'variables' => {}} }
         let(:env_vars) { {'my-var' => 'some-value'} }
         let(:shared_env) { Heroploy::Config::SharedEnv.new(shared_attrs) }
+        let(:env) { Heroploy::Config::Environment.new('my-env', {'variables' => env_vars}) }
       
         it "it executes successfully if the variables " do
-          commands.check_config(shared_env, env_vars)
+          commands.check_config(shared_env, env)
         end
       end
       
@@ -124,10 +126,11 @@ describe Heroploy::Commands::Checks do
         let(:shared_attrs) { {'required' => required, 'variables' => {}} }
         let(:env_vars) { {} }
         let(:shared_env) { Heroploy::Config::SharedEnv.new(shared_attrs) }
+        let(:env) { Heroploy::Config::Environment.new('my-env', {'variables' => env_vars}) }
 
         it "raises an error" do
           expect{
-            commands.check_config(shared_env, env_vars)
+            commands.check_config(shared_env, env)
           }.to raise_error("Missing config value for 'my-var'")
         end
       end
