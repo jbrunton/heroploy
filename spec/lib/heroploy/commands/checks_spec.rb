@@ -136,4 +136,31 @@ describe Heroploy::Commands::Checks do
       end
     end    
   end
+  
+  describe "#check_travis" do
+    let(:travis_repo_name) { 'travis/repo' }
+    let(:travis_repo) { build(:travis_repo) }
+    
+    before { Travis::Repository.stub(:find).and_return(travis_repo) }
+    
+    context "if the build is failing for the given branch" do
+      let(:failed_build) { build(:travis_build, :failed) }
+      before { expect(travis_repo).to receive(:branch).and_return(failed_build) }
+      
+      it "raises an error" do
+        expect{
+          commands.check_travis('my-branch', 'travis/repo')
+        }.to raise_error("Failing Travis build for branch my-branch")
+      end
+    end
+    
+    context "if the build is passing for the given branch" do
+      let(:passed_build) { build(:travis_build, :passed) }
+      before { expect(travis_repo).to receive(:branch).and_return(passed_build) }
+      
+      it "executes successfully" do
+        commands.check_travis('my-branch', 'travis/repo')
+      end
+    end
+  end
 end

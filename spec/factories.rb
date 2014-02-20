@@ -44,4 +44,20 @@ FactoryGirl.define do
       ]
     }
   end
+  
+  factory :travis_build, :class => Travis::Client::Build do
+    [:passed, :failed].each do |t|
+      trait t do
+        after(:build) do |build|
+          build.state = t.to_s
+        end
+      end
+    end
+  
+    initialize_with { Travis::Client::Build.new(Travis::Client::Session.new, 123) }
+  end
+  
+  factory :travis_repo, :class => Travis::Client::Repository do
+    initialize_with { Travis::Client::Repository.new(Travis::Client::Session.new, 123) }
+  end
 end

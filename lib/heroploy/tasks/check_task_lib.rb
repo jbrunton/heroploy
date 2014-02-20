@@ -30,6 +30,7 @@ module Heroploy
         define_branch_check
         define_staged_check
         define_config_check
+        define_travis_check
         define_all_check
       end
     
@@ -81,6 +82,16 @@ module Heroploy
           check_config(deploy_config.shared_env, env_config)
         end
         @defined_tasks << :config
+      end
+      
+      def define_travis_check
+        if env_config.checks.travis then
+          desc "check the travis build for the current branch"
+          task :travis do
+            check_travis(current_branch, deploy_config.travis_repo)
+          end
+          @defined_tasks << :travis
+        end
       end
     
       def define_all_check

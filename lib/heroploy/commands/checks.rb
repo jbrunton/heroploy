@@ -1,3 +1,5 @@
+require 'travis'
+
 module Heroploy
   module Commands
     module Checks
@@ -35,6 +37,13 @@ module Heroploy
           unless merged_keys.include?(key)
             raise "Missing config value for '#{key}'"
           end
+        end
+      end
+      
+      def check_travis(branch_name, travis_repo_name)
+        travis_repo = Travis::Repository.find(travis_repo_name)
+        unless travis_repo.branch(branch_name).green?
+          raise "Failing Travis build for branch #{branch_name}"
         end
       end
     end
