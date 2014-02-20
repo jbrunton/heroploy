@@ -41,10 +41,24 @@ describe "check:all" do
     its(:prerequisites) { should include('branch') }
   end
   
-  context "if checks.staged is not set" do
+  context "if checks.branch is not set" do
     before { environment.checks.branch = nil }
     include_context "rake"
     
     its(:prerequisites) { should_not include('branch') }
+  end
+  
+  context "if checks.travis is set" do
+    before { environment.checks.travis = true }
+    include_context "rake"
+    
+    its(:prerequisites) { should include('travis') }
+  end
+  
+  context "if checks.travis is not set" do
+    before { environment.checks.travis = nil }
+    include_context "rake"
+    
+    its(:prerequisites) { should_not include('travis') }
   end
 end
