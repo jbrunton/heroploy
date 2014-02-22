@@ -3,23 +3,27 @@ FactoryGirl.define do
     pushed false
     staged false
     branch nil
+    travis false
     
     trait :development do
       pushed false
       staged false
       branch nil
+      travis false
     end
     
     trait :staging do
       pushed true
       staged false
       branch 'master'
+      travis true
     end
     
     trait :production do
       pushed true
       staged true
       branch 'master'
+      travis true
     end
   end
   
@@ -36,6 +40,8 @@ FactoryGirl.define do
   end
   
   factory :deployment_config, :class => Heroploy::Config::DeploymentConfig do
+    travis_repo "my-travis-user/my-travis-repo"
+
     environments {
       [
         build(:environment, :development),
