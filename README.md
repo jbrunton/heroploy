@@ -35,7 +35,7 @@ If you're running Rails, you can use this generator to add an example config fil
 Here's an example ```heroploy.yml``` file:
 
 ```yaml
-travis_repo: my-travis=user/my-travis-repo
+travis_repo: my-travis-user/my-travis-repo
 
 environments:
   development:
