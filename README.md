@@ -36,6 +36,7 @@ Here's an example ```heroploy.yml``` file:
 
 ```yaml
 travis_repo: my-travis=user/my-travis-repo
+
 environments:
   development:
     app: my-development-app
