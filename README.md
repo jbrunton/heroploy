@@ -35,6 +35,8 @@ If you're running Rails, you can use this generator to add an example config fil
 Here's an example ```heroploy.yml``` file:
 
 ```yaml
+travis_repo: my-travis-user/my-travis-repo
+
 environments:
   development:
     app: my-development-app
@@ -52,6 +54,7 @@ environments:
       pushed: true
       branch: master
       staged: true
+      travis: true
 ```
 
 This file:
@@ -59,7 +62,7 @@ This file:
 * Describes ```development```, ```staging``` and ```production``` deployment rules for three Heroku apps (named ```my-development-app```, ```my-staging-app``` and ```my-production-app``` on Heroku).
 * Allows any branch to be pushed directly to ```development```.
 * Only allows ```master``` to be pushed to ```staging```, and requires all changes to have first been pushed to ```origin```.
-* Only allows deployment to ```production``` if the changes have first been staged on ```staging```.
+* Only allows deployment to ```production``` if the changes have first been staged on ```staging``` and the Travis build is passing.
 
 To deploy to one of these environments, run ```rake heroploy:<environment>:deploy```.  For example:
 
