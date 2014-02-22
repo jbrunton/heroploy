@@ -6,6 +6,7 @@ require 'heroploy/config/remote_config'
 module Heroploy
   module Config
     class DeploymentConfig
+      attr_accessor :travis_repo
       attr_accessor :environments
       attr_accessor :shared_env
       attr_accessor :remote_configs
@@ -15,6 +16,7 @@ module Heroploy
       end
 
       def initialize(attrs = {})
+        @travis_repo = attrs['travis_repo']
         unless attrs['environments'].nil?
           @environments = attrs['environments'].map { |name, env_attrs| Environment.new(name, env_attrs) }
         end

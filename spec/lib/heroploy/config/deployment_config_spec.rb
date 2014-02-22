@@ -5,6 +5,7 @@ describe Heroploy::Config::DeploymentConfig do
   
   let(:attrs) do
     {
+      'travis_repo' => 'travis/my-repo',
       'environments' => {
         'staging' => {},
         'production' => {
@@ -29,6 +30,10 @@ describe Heroploy::Config::DeploymentConfig do
     context "it initializes its environment variables" do
       its('shared_env.required') { should eq(['my-var']) }
       its('shared_env.variables') { should eq({'my-var' => 'some-value'}) }
+    end
+    
+    context "it initializes the travis repo" do
+      its(:travis_repo) { should eq('travis/my-repo') }
     end
   end
   
