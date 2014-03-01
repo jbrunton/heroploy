@@ -4,7 +4,7 @@ module Heroploy
       attr_accessor :required
       attr_accessor :variables
       
-      def initialize(attrs)
+      def initialize(attrs = {})
         attrs ||= {}
         @required = attrs['required'] || []
         @variables = attrs['variables'] || {}

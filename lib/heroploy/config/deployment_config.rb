@@ -2,6 +2,8 @@ require 'heroploy/config/deployment_config'
 require 'heroploy/config/environment'
 require 'heroploy/config/shared_env'
 require 'heroploy/config/remote_config'
+require 'heroploy/commands/shell'
+require 'heroploy/commands/git'
 
 module Heroploy
   module Config
@@ -10,6 +12,8 @@ module Heroploy
       attr_accessor :environments
       attr_accessor :shared_env
       attr_accessor :remote_configs
+      
+      include Commands::Git
 
       def [](env_name)
         environments.select{ |env| env.name == env_name }.first
@@ -33,6 +37,19 @@ module Heroploy
       def merge_config(deployment_config)
         deployment_config.environments.each do |env_config|
           self[env_config.name].variables.merge!(env_config.variables)
+        end
+      end
+      
+      def load_remotes!
+        unless remote_configs.nil?
+          remote_configs.each do |remote_config|
+            git_clone(remote_config.repository, remote_config.name) do
+              remote_config.files.each do |filename|
+                config_file = File.join(Dir.pwd, remote_config.name, filename)
+                merge_config(Heroploy::Config::DeploymentConfig.load(config_file))
+              end
+            end
+          end
         end
       end
     end

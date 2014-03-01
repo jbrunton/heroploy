@@ -1,3 +1,5 @@
+require 'rake/tasklib'
+
 module Heroploy
   class Shell
     extend FileUtils
