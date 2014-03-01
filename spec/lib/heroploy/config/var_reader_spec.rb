@@ -55,5 +55,13 @@ describe Heroploy::Config::VarReader do
         expect(var_reader[:fizz]).to eq('buzz')
       end
     end
+    
+    context "if no variables are defined" do
+      before { allow(Heroploy::Config::DeploymentConfig).to receive(:load).and_return(build(:deployment_config)) }
+      
+      it "returns nil" do
+        expect(var_reader[:foo]).to eq(nil)
+      end
+    end
   end  
 end

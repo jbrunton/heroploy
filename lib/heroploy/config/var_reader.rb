@@ -8,7 +8,7 @@ module Heroploy
       def deployment_config
         @deployment_config ||= begin
           config = Heroploy::Config::DeploymentConfig.load
-          config.load_remotes!
+          config.load_remotes! unless config.nil?
           config
         end
       end
@@ -19,8 +19,14 @@ module Heroploy
       
       def [](var_name)
         config_var = ENV[var_name.to_s]
-        config_var ||= deployment_config[env_matcher_name].variables[var_name.to_s]
-        config_var ||= deployment_config.shared_env.variables[var_name.to_s]
+        config_var ||= begin
+          environment = deployment_config[env_matcher_name]
+          environment.variables[var_name.to_s] unless environment.nil?
+        end
+        config_var ||= begin
+          shared_env = deployment_config.shared_env
+          shared_env.variables[var_name.to_s] unless shared_env.nil?
+        end
       end
     end
   end
