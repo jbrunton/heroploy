@@ -3,8 +3,14 @@ require 'heroploy/config/deployment_config'
 module Heroploy
   module Config
     class VarReader
+      attr_accessor :deployment_config
+      
       def deployment_config
-        @deployment_config ||= Heroploy::Config::DeploymentConfig.load
+        @deployment_config ||= begin
+          config = Heroploy::Config::DeploymentConfig.load
+          config.load_remotes!
+          config
+        end
       end
       
       def env_matcher_name

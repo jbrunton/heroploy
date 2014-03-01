@@ -33,16 +33,7 @@ module Heroploy
       def define_load_configs_task
         desc 'load remote configs'
         task :load_remote_configs do
-          unless deployment_config.remote_configs.nil?
-            deployment_config.remote_configs.each do |remote_config|
-              git_clone(remote_config.repository, remote_config.name) do
-                remote_config.files.each do |filename|
-                  config_file = File.join(Dir.pwd, remote_config.name, filename)
-                  deployment_config.merge_config(Heroploy::Config::DeploymentConfig.load(config_file))
-                end
-              end
-            end
-          end
+          deployment_config.load_remotes!
         end
       end
     

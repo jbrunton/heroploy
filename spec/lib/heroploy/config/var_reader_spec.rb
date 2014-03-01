@@ -30,7 +30,7 @@ describe Heroploy::Config::VarReader do
     context "if an environment matcher is defined" do
       let(:deployment_config) do
         build(:deployment_config,
-        :shared_env => build(:shared_env, :variables => {'fizz' => 'buzz'}),
+          :shared_env => build(:shared_env, :variables => {'fizz' => 'buzz'}),
           :environments => [
             build(:environment,
               :name => 'Rails.env[development]',
