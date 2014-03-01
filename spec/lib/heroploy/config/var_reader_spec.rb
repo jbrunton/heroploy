@@ -33,14 +33,19 @@ describe Heroploy::Config::VarReader do
           :shared_env => build(:shared_env, :variables => {'fizz' => 'buzz'}),
           :environments => [
             build(:environment,
-              :name => 'Rails.env[development]',
+              :name => 'Rails.env[test]',
               :variables => {'foo' => 'baz'}
             )
           ]
         )
       end
       
-      before { allow(Heroploy::Config::DeploymentConfig).to receive(:load).and_return(deployment_config) }
+      before do
+        allow(Heroploy::Config::DeploymentConfig).to receive(:load).
+          and_return(deployment_config)
+        
+        allow(Rails).to receive(:env).and_return('test')
+      end
       
       it "returns the variable for the matched environment" do
         expect(var_reader[:foo]).to eq('baz')
