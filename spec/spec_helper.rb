@@ -15,6 +15,7 @@ require 'heroploy/tasks/deploy_task_lib'
 require 'heroploy/config/deployment_config'
 require 'heroploy/config/environment'
 require 'heroploy/config/environment_checks'
+require 'heroploy/config/var_reader'
 
 require 'support/shell_support'
 require 'support/shared_contexts/rake'
