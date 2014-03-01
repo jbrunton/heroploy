@@ -14,6 +14,7 @@ module Heroploy
       def [](var_name)
         config_var = ENV[var_name.to_s]
         config_var ||= deployment_config[env_matcher_name].variables[var_name.to_s]
+        config_var ||= deployment_config.shared_env.variables[var_name.to_s]
       end
     end
   end

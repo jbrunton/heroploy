@@ -39,8 +39,15 @@ FactoryGirl.define do
     end
   end
   
+  factory :shared_env, :class => Heroploy::Config::SharedEnv do
+    required []
+    variables {}
+  end
+  
   factory :deployment_config, :class => Heroploy::Config::DeploymentConfig do
     travis_repo "my-travis-user/my-travis-repo"
+    
+    shared_env nil
 
     environments {
       [
