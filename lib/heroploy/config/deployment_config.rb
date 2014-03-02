@@ -41,7 +41,7 @@ module Heroploy
       end
       
       def load_remotes!
-        unless remote_configs.nil?
+        unless remote_configs.nil? || Rails.env.test?
           remote_configs.each do |remote_config|
             git_clone(remote_config.repository, remote_config.name) do
               remote_config.files.each do |filename|
