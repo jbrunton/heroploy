@@ -33,6 +33,7 @@ FactoryGirl.define do
     [:development, :staging, :production].each do |t|
       trait t do
         name t.to_s
+        app "my-#{t.to_s}-app"
         remote t.to_s
         checks { build(:environment_checks, t) }
       end

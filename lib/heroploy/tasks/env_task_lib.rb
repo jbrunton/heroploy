@@ -28,6 +28,7 @@ module Heroploy
         namespace env.name do
           define_check_tasks
           define_git_tasks
+          define_db_tasks
           define_heroku_tasks
         end
       end
@@ -53,20 +54,37 @@ module Heroploy
           end
         end
       end
+      
+      def define_db_tasks
+        namespace :db do
+          desc "run database migrations on #{env.name}"
+          task :migrate do
+            heroku_db_migrate(env.app)
+          end
+          
+          desc "reset the database on #{env.name}"
+          task :reset do
+            heroku_db_reset(env.app)
+          end
+          
+          desc "seed the database on #{env.name}"
+          task :seed do
+            heroku_db_seed(env.app)
+          end
+          
+          desc "reset, migrate and seed the database"
+          task :recreate => [:reset, :migrate, :seed]
+        end
+      end
     
       def define_heroku_tasks
-        desc "run database migrations on #{env.name}"
-        task :migrate do
-          heroku_migrate(env.app)
-        end
-        
         desc "set config variables"
         task :config => :load_remote_configs do
           heroku_config_set(deployment_config.shared_env.variables, env.variables, env.app)
         end
 
         desc "deploy to #{env.name}"
-        task :deploy => ['check:all', :push, :config, :migrate, :tag]
+        task :deploy => ['check:all', :push, :config, 'db:migrate', :tag]
       end
     end
   end

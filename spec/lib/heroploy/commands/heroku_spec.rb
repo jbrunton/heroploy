@@ -21,19 +21,33 @@ describe Heroploy::Commands::Heroku do
     end
   end
   
-  context "#heroku_migrate" do
-    it "runs rake db:migrate on the heroku server" do
-      expect_command("heroku run rake db:migrate --app my-app")
-      commands.heroku_migrate("my-app")
-    end    
-  end
-  
   context "#heroku_config_set" do
     it "sets the values for the given config variables" do
       common_vars = {'foo' => 'foo'}
       env_vars = {'bar' => 'bar'}
       expect_command("heroku config:set foo=foo bar=bar --app my-app")
       commands.heroku_config_set(common_vars, env_vars, "my-app")
+    end
+  end
+  
+  context "#heroku_db_migrate" do
+    it "runs rake db:migrate on the heroku server" do
+      expect_command("heroku run rake db:migrate --app my-app")
+      commands.heroku_db_migrate("my-app")
+    end    
+  end
+  
+  describe "#heroku_db_reset" do
+    it "resets the database for the given app" do
+      expect_command("heroku pg:reset DATABASE --confirm my-app --app my-app")
+      commands.heroku_db_reset("my-app")
+    end
+  end
+  
+  describe "#heroku_db_seed" do
+    it "seeds the database for the given app" do
+      expect_command("heroku run rake db:seed --app my-app")
+      commands.heroku_db_seed("my-app")
     end
   end
 end
