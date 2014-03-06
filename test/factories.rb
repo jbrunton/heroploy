@@ -21,7 +21,7 @@ FactoryGirl.define do
     
     trait :production do
       pushed true
-      staged true
+      staged 'staging'
       branch 'master'
       travis true
     end
