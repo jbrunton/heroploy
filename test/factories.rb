@@ -29,6 +29,7 @@ FactoryGirl.define do
   
   factory :environment, :class => Heroploy::Config::Environment do    
     checks { build(:environment_checks) }
+    variables { {} }
     
     [:development, :staging, :production].each do |t|
       trait t do
@@ -42,13 +43,13 @@ FactoryGirl.define do
   
   factory :shared_env, :class => Heroploy::Config::SharedEnv do
     required []
-    variables {}
+    variables { {} }
   end
   
   factory :deployment_config, :class => Heroploy::Config::DeploymentConfig do
     travis_repo "my-travis-user/my-travis-repo"
     
-    shared_env nil
+    shared_env { build(:shared_env) }
 
     environments {
       [
