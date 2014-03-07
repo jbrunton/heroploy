@@ -28,8 +28,8 @@ Feature: Environment tasks
   Scenario: Failing remote check
   
     Given a staging environment
-    When my branch is ahead of origin
-    And I have "master" checked out
+    When I have "master" checked out
+    And my branch is ahead of origin
     And I run "staging:deploy"
     Then the task should fail with "Branch master is behind origin/master"
     
@@ -38,6 +38,6 @@ Feature: Environment tasks
     Given a production environment
     And a staging environment
     When I have "master" checked out
-    And my changes aren't yet staged
+    And my branch is ahead of staging
     And I run "production:deploy"
     Then the task should fail with "Changes not yet staged on staging"

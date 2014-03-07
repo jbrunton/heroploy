@@ -8,6 +8,9 @@ Given(/^a (development|staging|production) environment$/) do |env_type|
 
   allow_any_instance_of(Heroploy::Tasks::CheckTaskLib).to receive(:git_remote_has_branch?).
     and_return(true)
+
+  allow_any_instance_of(Heroploy::Tasks::CheckTaskLib).to receive(:git_remote_behind?).
+    and_return(false)
 end
 
 When(/^I run "(.*?)"$/) do |task_name|
@@ -21,7 +24,7 @@ When(/^I run "(.*?)"$/) do |task_name|
 
   @travis_build ||= build(:travis_build, :passed)
   allow(@travis_repo).to receive(:branch).and_return(@travis_build)
-
+  
   Rake::Task.tasks.each do |task|
     allow(task).to receive(:execute).and_call_original
   end
@@ -42,6 +45,7 @@ Then(/^heroploy should invoke "(.*?)"$/) do |task_name|
 end
 
 When(/^I have "(.*?)" checked out$/) do |branch_name|
+  @branch_name = branch_name
   allow_any_instance_of(Heroploy::Tasks::CheckTaskLib).to receive(:current_branch).and_return(branch_name)
 end
 
@@ -61,9 +65,13 @@ Then(/^the task should fail with "(.*?)"$/) do |expected_error|
 end
 
 When(/^my branch is ahead of origin$/) do
-  allow_any_instance_of(Heroploy::Tasks::CheckTaskLib).to receive(:git_remote_behind?).and_return(true)
+  allow_any_instance_of(Heroploy::Tasks::CheckTaskLib).to receive(:git_remote_behind?).
+    with('origin', @branch_name).
+    and_return(true)
 end
 
-When(/^my changes aren't yet staged$/) do
-  allow_any_instance_of(Heroploy::Tasks::CheckTaskLib).to receive(:git_staged?).and_return(false)
+When(/^my branch is ahead of staging$/) do
+  allow_any_instance_of(Heroploy::Tasks::CheckTaskLib).to receive(:git_remote_behind?).
+    with('staging', 'master', @branch_name).
+    and_return(true)
 end
