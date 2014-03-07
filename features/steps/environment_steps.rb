@@ -1,10 +1,26 @@
-Given(/^a (development|staging|production) environment$/) do |env_type|
+def define_environment(env_type)
   @environments ||= []
-  @environments << build(:environment, env_type.to_sym)  
+  environment = build(:environment, env_type.to_sym)
+  @environments << environment
+  environment
+end
+
+Given(/^a (development|staging|production) environment$/) do |env_type|
+  define_environment(env_type)
+end
+
+Given(/^a (development|staging|production) environment with variables:$/) do |env_type, variables|
+  environment = define_environment(env_type)
+  environment.variables = YAML::load(variables) unless variables.nil?
+end
+
+Given(/^a shared environment with variables:$/) do |variables|
+  @shared_env = build(:shared_env, variables: YAML::load(variables))
 end
 
 def init_tasks
-  deployment_config = build(:deployment_config, environments: @environments)
+  @shared_env ||= build(:shared_env)
+  deployment_config = build(:deployment_config, environments: @environments, shared_env: @shared_env)
   Heroploy::Tasks::DeployTaskLib.new(deployment_config)
 end
 
