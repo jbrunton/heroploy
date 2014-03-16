@@ -5,7 +5,7 @@
 [![Code Climate](https://codeclimate.com/github/jbrunton/heroploy.png)](https://codeclimate.com/github/jbrunton/heroploy)
 [![Coverage Status](https://coveralls.io/repos/jbrunton/heroploy/badge.png?branch=master)](https://coveralls.io/r/jbrunton/heroploy?branch=master)
 
-A few helpful rake tasks to manage deploying Rails apps to development, staging and production Heroku servers.
+A few helpful rake tasks to automate configuring and deploying to Heroku apps.
 
 ## Installation
 
