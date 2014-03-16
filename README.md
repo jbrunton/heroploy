@@ -23,7 +23,7 @@ Or install it yourself as:
 
 ## Usage
 
-**See [Configuring Heroploy](https://github.com/jbrunton/heroploy/wiki/Configuring-Heroploy) for a more detailed description of the options available.**
+**See the [documentation](https://github.com/jbrunton/heroploy/wiki/) for a more detailed description of the options available for configuring and deploying with Heroploy.**
 
 
 Add a ```heroploy.yml``` file to your application's config directory which describes the Heroku apps you will deploy to, and the checks you would like when deploying to each.
