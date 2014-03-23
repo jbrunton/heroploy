@@ -5,11 +5,11 @@ def define_environment(env_type)
   environment
 end
 
-Given(/^a (development|staging|production) environment$/) do |env_type|
+Given(/^a (local|development|staging|production) environment$/) do |env_type|
   define_environment(env_type)
 end
 
-Given(/^a (development|staging|production) environment with variables:$/) do |env_type, variables|
+Given(/^a (local|development|staging|production) environment with variables:$/) do |env_type, variables|
   environment = define_environment(env_type)
   environment.variables = YAML::load(variables) unless variables.nil?
 end

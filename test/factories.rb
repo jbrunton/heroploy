@@ -5,11 +5,13 @@ FactoryGirl.define do
     branch nil
     travis false
     
-    trait :development do
-      pushed false
-      staged false
-      branch nil
-      travis false
+    [:local, :development].each do |t|
+      trait t do
+        pushed false
+        staged false
+        branch nil
+        travis false
+      end
     end
     
     trait :staging do
@@ -30,6 +32,10 @@ FactoryGirl.define do
   factory :environment, :class => Heroploy::Config::Environment do    
     checks { build(:environment_checks) }
     variables { {} }
+    
+    trait :local do
+      name 'local'
+    end
     
     [:development, :staging, :production].each do |t|
       trait t do
@@ -53,6 +59,7 @@ FactoryGirl.define do
 
     environments {
       [
+        build(:environment, :local),
         build(:environment, :development),
         build(:environment, :staging),
         build(:environment, :production)
