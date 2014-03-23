@@ -6,25 +6,32 @@ require "rake"
 
 shared_context "rake" do
   subject { task }
+  let(:task) { Rake::Task[task_name] }
+  let(:task_name) { build_task_name }
     
   before(:each) do
+    reset_rake_environment
+    create_deployment_tasks 
+    stub_rake_tasks
+    stub_shell
+  end
+  
+  def reset_rake_environment
     Rake::Task.clear
-
-    Heroploy::Tasks::DeployTaskLib.new(build_deployment_config) 
-
+  end
+  
+  def create_deployment_tasks
+    Heroploy::Tasks::DeployTaskLib.new(build_deployment_config)
+  end
+  
+  def stub_rake_tasks
     Rake::Task.tasks.each do |task|
       if task.name != task_name
         task.stub(:execute)
       end
     end
-
-    stub_shell
-  end  
+  end
   
-  let(:task) { Rake::Task[task_name] }
-  
-  let(:task_name) { build_task_name }
-
   def build_environments
     if defined?(environment)
       [environment]
