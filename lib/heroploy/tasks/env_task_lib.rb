@@ -26,10 +26,20 @@ module Heroploy
 
       def define
         namespace env.name do
-          define_check_tasks
-          define_git_tasks
-          define_db_tasks
-          define_heroku_tasks
+          if env.name == 'local'
+            define_run_task
+          else
+            define_check_tasks
+            define_git_tasks
+            define_db_tasks
+            define_heroku_tasks
+          end
+        end
+      end
+      
+      def define_run_task
+        task :run do
+          rails_server(deployment_config.shared_env.variables, env.variables)
         end
       end
     

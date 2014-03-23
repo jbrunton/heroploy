@@ -20,21 +20,27 @@ shared_context "rake" do
   let(:task) { Rake::Task[task_name] }
   
   subject { task }
-  
+    
   before(:each) do
     Rake::Task.clear
-    
-    unless defined?(deploy_config)
+
+    if defined?(deployment_config)
+      @deployment_config = deployment_config
+    else
       if defined?(environment)
-        deployment_config = build(:deployment_config, environments: [environment])
+        @environments = [environment]
       elsif defined?(environments)
-        deployment_config = build(:deployment_config, environments: environments)
+        @environments = environments
+      end
+      
+      @deployment_config = if @environments.nil?
+        build(:deployment_config)
       else
-        deployment_config = build(:deployment_config)
+        build(:deployment_config, environments: @environments)
       end
     end
-
-    Heroploy::Tasks::DeployTaskLib.new(deployment_config) 
+    
+    Heroploy::Tasks::DeployTaskLib.new(@deployment_config) 
 
     Rake::Task.tasks.each do |task|
       if task.name != task_name
