@@ -9,14 +9,14 @@ describe Heroploy::Commands::Rails do
   
   describe "#rails_server" do
     it "starts a rails server" do
-      expect_command("bundle exec  rails s")
+      expect_command("bundle exec rails s")
       commands.rails_server({}, {})
     end
     
     it "passes the given variables to the rails environment" do
       local_variables = {'foo' => 'bar'}
       shared_variables = {'fizz' => 'buzz'}
-      expect_command("bundle exec fizz=buzz foo=bar rails s")
+      expect_command("fizz=buzz foo=bar bundle exec rails s")
       commands.rails_server(shared_variables, local_variables)
     end
   end  

@@ -7,4 +7,4 @@ Feature: Local environment
         foo: bar
       """
     When I run "local:run"
-    Then heroploy should execute "bundle exec foo=bar rails s"
+    Then heroploy should execute "foo=bar bundle exec rails s"
