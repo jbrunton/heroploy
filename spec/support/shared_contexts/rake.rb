@@ -5,7 +5,56 @@
 require "rake"
 
 shared_context "rake" do
-  let(:task_name) {
+  subject { task }
+  let(:task) { Rake::Task[task_name] }
+  let(:task_name) { build_task_name }
+    
+  before(:each) do
+    reset_rake_environment
+    create_deployment_tasks 
+    stub_rake_tasks
+    stub_shell
+  end
+  
+  def reset_rake_environment
+    Rake::Task.clear
+  end
+  
+  def create_deployment_tasks
+    Heroploy::Tasks::DeployTaskLib.new(build_deployment_config)
+  end
+  
+  def stub_rake_tasks
+    Rake::Task.tasks.each do |task|
+      if task.name != task_name
+        task.stub(:execute)
+      end
+    end
+  end
+  
+  def build_environments
+    if defined?(environment)
+      [environment]
+    elsif defined?(environments)
+      environments
+    end
+  end
+  
+  def build_deployment_config
+    if defined?(deployment_config)
+      deployment_config
+    else
+      environments = build_environments
+      
+      if environments.nil?
+        build(:deployment_config)
+      else
+        build(:deployment_config, environments: environments)
+      end
+    end
+  end
+  
+  def build_task_name
     if defined?(environment)
       env_name = environment.name
     elsif defined?(environments)
@@ -15,33 +64,5 @@ shared_context "rake" do
     end
 
     "#{env_name}:#{self.class.top_level_description}"
-  }
-
-  let(:task) { Rake::Task[task_name] }
-  
-  subject { task }
-  
-  before(:each) do
-    Rake::Task.clear
-    
-    unless defined?(deploy_config)
-      if defined?(environment)
-        deployment_config = build(:deployment_config, environments: [environment])
-      elsif defined?(environments)
-        deployment_config = build(:deployment_config, environments: environments)
-      else
-        deployment_config = build(:deployment_config)
-      end
-    end
-
-    Heroploy::Tasks::DeployTaskLib.new(deployment_config) 
-
-    Rake::Task.tasks.each do |task|
-      if task.name != task_name
-        task.stub(:execute)
-      end
-    end
-
-    stub_shell
-  end  
+  end
 end

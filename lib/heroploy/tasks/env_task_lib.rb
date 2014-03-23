@@ -3,6 +3,7 @@ require 'rake/tasklib'
 require 'heroploy/commands/heroku'
 require 'heroploy/commands/git'
 require 'heroploy/commands/checks'
+require 'heroploy/commands/rails'
 
 require 'heroploy/tasks/check_task_lib'
 
@@ -14,6 +15,7 @@ module Heroploy
       include Commands::Git
       include Commands::Heroku
       include Commands::Checks
+      include Commands::Rails
     
       attr_accessor :deployment_config
       attr_accessor :env
@@ -26,10 +28,20 @@ module Heroploy
 
       def define
         namespace env.name do
-          define_check_tasks
-          define_git_tasks
-          define_db_tasks
-          define_heroku_tasks
+          if env.name == 'local'
+            define_run_task
+          else
+            define_check_tasks
+            define_git_tasks
+            define_db_tasks
+            define_heroku_tasks
+          end
+        end
+      end
+      
+      def define_run_task
+        task :run do
+          rails_server(deployment_config.shared_env.variables, env.variables)
         end
       end
     
