@@ -3,6 +3,7 @@ require 'rake/tasklib'
 require 'heroploy/commands/heroku'
 require 'heroploy/commands/git'
 require 'heroploy/commands/checks'
+require 'heroploy/commands/rails'
 
 require 'heroploy/tasks/check_task_lib'
 
@@ -14,6 +15,7 @@ module Heroploy
       include Commands::Git
       include Commands::Heroku
       include Commands::Checks
+      include Commands::Rails
     
       attr_accessor :deployment_config
       attr_accessor :env
