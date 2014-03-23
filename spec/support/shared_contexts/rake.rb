@@ -24,23 +24,7 @@ shared_context "rake" do
   before(:each) do
     Rake::Task.clear
 
-    if defined?(deployment_config)
-      @deployment_config = deployment_config
-    else
-      if defined?(environment)
-        @environments = [environment]
-      elsif defined?(environments)
-        @environments = environments
-      end
-      
-      @deployment_config = if @environments.nil?
-        build(:deployment_config)
-      else
-        build(:deployment_config, environments: @environments)
-      end
-    end
-    
-    Heroploy::Tasks::DeployTaskLib.new(@deployment_config) 
+    Heroploy::Tasks::DeployTaskLib.new(build_deployment_config) 
 
     Rake::Task.tasks.each do |task|
       if task.name != task_name
@@ -50,4 +34,26 @@ shared_context "rake" do
 
     stub_shell
   end  
+  
+  def build_environments
+    if defined?(environment)
+      [environment]
+    elsif defined?(environments)
+      environments
+    end
+  end
+  
+  def build_deployment_config
+    if defined?(deployment_config)
+      deployment_config
+    else
+      environments = build_environments
+      
+      if environments.nil?
+        build(:deployment_config)
+      else
+        build(:deployment_config, environments: environments)
+      end
+    end
+  end
 end
