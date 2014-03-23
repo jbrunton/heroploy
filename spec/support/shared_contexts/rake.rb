@@ -5,20 +5,6 @@
 require "rake"
 
 shared_context "rake" do
-  let(:task_name) {
-    if defined?(environment)
-      env_name = environment.name
-    elsif defined?(environments)
-      env_name = environments[0].name
-    else
-      env_name = deployment_config.environments[0].name
-    end
-
-    "#{env_name}:#{self.class.top_level_description}"
-  }
-
-  let(:task) { Rake::Task[task_name] }
-  
   subject { task }
     
   before(:each) do
@@ -35,6 +21,10 @@ shared_context "rake" do
     stub_shell
   end  
   
+  let(:task) { Rake::Task[task_name] }
+  
+  let(:task_name) { build_task_name }
+
   def build_environments
     if defined?(environment)
       [environment]
@@ -55,5 +45,17 @@ shared_context "rake" do
         build(:deployment_config, environments: environments)
       end
     end
+  end
+  
+  def build_task_name
+    if defined?(environment)
+      env_name = environment.name
+    elsif defined?(environments)
+      env_name = environments[0].name
+    else
+      env_name = deployment_config.environments[0].name
+    end
+
+    "#{env_name}:#{self.class.top_level_description}"
   end
 end
